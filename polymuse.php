@@ -53,26 +53,31 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
     // Add 3D model to product gallery
     // Add 3D model to product gallery
-function polymuse_add_model_to_gallery($image, $attachment_id, $size = 'full', $main_image = true) {
-    global $product;
+
+    function polymuse_add_model_to_gallery($html, $attachment_id) {
+        global $product;
     
-    if (!$product) {
-        return $image;
+        if (!$product) {
+            return $html;
+        }
+    
+        $model_url = get_post_meta($product->get_id(), '_3d_model_url', true);
+    
+        if (!empty($model_url)) {
+            // Add the <model-viewer> element as part of the gallery
+            $model_viewer = '<div class="woocommerce-product-gallery__image polymuse-model-viewer">';
+            $model_viewer .= '<model-viewer src="' . esc_url($model_url) . '" alt="3D model of ' . esc_attr($product->get_name()) . '" auto-rotate camera-controls style="width: 100%; height: 100%;"></model-viewer>';
+            $model_viewer .= '</div>';
+            
+            // Add the 3D model viewer before the gallery images
+            return $model_viewer . $html;
+        }
+    
+        return $html;
     }
-    
-    $model_url = get_post_meta($product->get_id(), '_3d_model_url', true);
-    
-    if (!empty($model_url) && $main_image) {
-        $model_viewer = '<div class="woocommerce-product-gallery__image polymuse-model-viewer">';
-        $model_viewer .= '<model-viewer src="' . esc_url($model_url) . '" alt="3D model of ' . esc_attr($product->get_name()) . '" auto-rotate camera-controls style="width: 100%; height: 100%;"></model-viewer>';
-        $model_viewer .= '</div>';
-        
-        return $model_viewer . $image;
-    }
-    
-    return $image;
-}
-add_filter('woocommerce_single_product_image_thumbnail_html', 'polymuse_add_model_to_gallery', 10, 4);
+
+
+    add_filter('woocommerce_single_product_image_thumbnail_html', 'polymuse_add_model_to_gallery', 10, 4);
 
     // Enqueue styles and scripts
     function polymuse_enqueue_assets() {
@@ -86,8 +91,5 @@ add_filter('woocommerce_single_product_image_thumbnail_html', 'polymuse_add_mode
         echo '<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>';
     }
     add_action('wp_head', 'polymuse_add_model_viewer_script');
-
-    // Remove the previous display function as we no longer need it
-    remove_action('woocommerce_before_single_product_summary', 'polymuse_display');
 
 }
