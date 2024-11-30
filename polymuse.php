@@ -49,7 +49,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             echo '</div>';
         }
     }
-    add_action('woocommerce_before_single_product_summary', 'polymuse_display');
+    //add_action('woocommerce_before_single_product_summary', 'polymuse_display');
 
     // Add 3D model to product gallery
     // Add 3D model to product gallery
@@ -57,25 +57,48 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     function polymuse_add_model_to_gallery($html, $attachment_id) {
         global $product;
     
+        // Debug logging
+        error_log('polymuse_add_model_to_gallery called');
+        error_log('Attachment ID: ' . $attachment_id);
+        error_log('HTML received: ' . $html);
+    
         if (!$product) {
+            error_log('No product found');
             return $html;
         }
     
         $model_url = get_post_meta($product->get_id(), '_3d_model_url', true);
+        error_log('Model URL: ' . $model_url);
     
         if (!empty($model_url)) {
-            // Add the <model-viewer> element as part of the gallery
-            $model_viewer = '<div class="woocommerce-product-gallery__image polymuse-model-viewer">';
-            $model_viewer .= '<model-viewer src="' . esc_url($model_url) . '" alt="3D model of ' . esc_attr($product->get_name()) . '" auto-rotate camera-controls style="width: 100%; height: 100%;"></model-viewer>';
-            $model_viewer .= '</div>';
+            // Create thumbnail URL for the 3D model
+            $model_thumbnail_url = plugins_url('3d-model-thumbnail.png', __FILE__);
+            error_log('Model Thumbnail URL: ' . $model_thumbnail_url);
+    
+            // Check if this is the first image in the gallery
+            static $first_image = true;
             
-            // Add the 3D model viewer before the gallery images
-            return $model_viewer . $html;
+            if ($first_image) {
+                // Modify the thumbnail HTML to include the 3D model thumbnail
+                $model_thumbnail = '<li><img src="' . esc_url($model_thumbnail_url) . '" alt="3D Model Thumbnail" class="model-thumbnail" data-gallery-item="3d-model" /></li>';
+                
+                // Prepend the 3D model thumbnail
+                $html = $model_thumbnail . $html;
+                
+                // Create the model viewer div
+                $model_viewer = '<div class="woocommerce-product-gallery__image polymuse-model-viewer" data-gallery-item="3d-model">';
+                $model_viewer .= '<model-viewer src="' . esc_url($model_url) . '" alt="3D model of ' . esc_attr($product->get_name()) . '" auto-rotate camera-controls style="width: 100%; height: 100%;"></model-viewer>';
+                $model_viewer .= '</div>';
+                
+                $first_image = false;
+                
+                error_log('Modified HTML: ' . $html);
+                return $model_viewer . $html;
+            }
         }
     
         return $html;
     }
-
 
     add_filter('woocommerce_single_product_image_thumbnail_html', 'polymuse_add_model_to_gallery', 10, 4);
 
