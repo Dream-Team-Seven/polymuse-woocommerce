@@ -1,0 +1,10 @@
+*** Test Add to Dom Plugin Changelog ***
+
+2025-01-19 - version 0.0.0
+* Project setup
+
+2025-02-13 - version 1.0
+* Custom field to store 3D model url
+* Generate custom variant buttons based on encoded model
+* Update model on variant button clicked
+* Integration with variable product system
