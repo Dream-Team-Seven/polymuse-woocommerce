@@ -117,7 +117,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
         return $html;
     }
-    add_filter('woocommerce_single_product_image_thumbnail_html', 'polymuse_add_model_to_gallery', 10, 4);
+    add_filter('woocommerce_single_product_image_thumbnail_html', 'polymuse_add_model_and_thumbnail_to_gallery', 10, 4);
 
     function add_buttons_container()
     {
