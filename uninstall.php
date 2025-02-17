@@ -8,4 +8,4 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 }
 
 // Remove post meta data
-delete_post_meta_by_key('_3d_model_url');
+// delete_post_meta_by_key('_3d_model_url');
