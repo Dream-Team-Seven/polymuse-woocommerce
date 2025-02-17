@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: PolyMuse
+Plugin Name: polymuse-woocommerce
 Plugin URI: https://yourwebsite.com/
 Description: Allows users to add 3D models to WooCommerce products
 Version: 1.0
