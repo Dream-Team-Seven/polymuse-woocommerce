@@ -1,8 +1,4 @@
 <?php
-/*
-Plugin Name: polymuse-woocommerce
-*/
-
 if (!defined('WP_UNINSTALL_PLUGIN')) {
     exit;
 }
