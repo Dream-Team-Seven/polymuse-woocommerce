@@ -9,7 +9,7 @@ jQuery(document).ready(function ($) {
     setupModelViewerVariants();
 
     // For variable product page
-    changeVariantInputToLabel();
+    // changeVariantInputToLabel();
 
     addVariantButtonOnClick();
 
@@ -35,6 +35,7 @@ jQuery(document).ready(function ($) {
                 // Get material info for each variant
                 const variantInfo = {};
                 if (variants) {
+                    changeVariantInputToLabel(); 
                     variants.forEach(variant => {
                         modelViewer.variantName = variant;
                         const material = modelViewer.model.materials[0]; // Assuming first material
