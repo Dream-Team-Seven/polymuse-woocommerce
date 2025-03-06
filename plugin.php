@@ -115,14 +115,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                             .woocommerce-product-gallery__image--placeholder:first-child {
                                 display: none;
                             }
-                            input {
-                                cursor: auto;
-                            }
                             .userInput {
-                                /* Add your styles for userInput here */
-                                border: 1px solid #ccc;
-                                padding: 10px;
-                            }
+                                cursor: auto;
+                            }                           
                         </style>
                         ';
 
