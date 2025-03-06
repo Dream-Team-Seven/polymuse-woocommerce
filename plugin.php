@@ -150,5 +150,5 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     add_action('wp_enqueue_scripts', 'polymuse_enqueue_assets');
 
     // Block swiping on model viewer
-    remove_theme_support('wc-product-gallery-photosswipe');
+    remove_theme_support('wc-product-gallery-swipe');
 }
