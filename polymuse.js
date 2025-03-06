@@ -13,9 +13,10 @@ jQuery(document).ready(function ($) {
 
     $(window).on('load', function () {
         console.log('Page fully loaded');
-        // Turn grab off userInput class 
+        // Turn cursor grab off userInput class 
         const userInput = $('.userInput');
         console.log('userInput:', userInput);
+        $(userInput).css('cursor', 'auto');
     });
 
 
