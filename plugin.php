@@ -110,17 +110,12 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 // with out this when you select a variant product  there will be a place holder image out of place
                 // The down side is then the main product image will not show up in the carousel or thumb nail
                 // A benefit is that when you select a variant the main image will not change and show the model viewer
-                $html = '
-                        <style>
-                            .woocommerce-product-gallery__image--placeholder:first-child {
-                                display: none;
-                            }
-                            .userInput {
-                                cursor: auto;
-                            }                           
-                        </style>
-                        ';
-
+                $html = '<style>
+                .woocommerce-product-gallery__image--placeholder:first-child { display: none; }
+                .twae-wrapper.twae-horizontal-wrapper:not(.twae-post-timeline){
+                pointer-events: none !important;}
+}
+                </style>';
                 error_log('Modified HTML: ' . $html);
                 return $model_viewer . $html;
             }
