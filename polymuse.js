@@ -10,22 +10,32 @@ jQuery(document).ready(function ($) {
 
     addVariantButtonOnClick();
 
-    disablePhotoSwipeSwiping();
+    blockPhotoSwipeSwiping();
 
     // Function to disable PhotoSwipe swiping
-    function disablePhotoSwipeSwiping() {
-        $(document).on('wc-product-gallery-before-init', function (event, $gallery) {
-            // Get the existing PhotoSwipe options or initialize an empty object
-            var photoswipe_options = $gallery.data('photoSwipeOptions') || {};
+    function blockPhotoSwipeSwiping() {
+        // Wait for PhotoSwipe to initialize
+        $(document).on('pswp_bind_events', function (event, pswp) {
+            // Reference to the PhotoSwipe instance
+            var pswpInstance = pswp;
 
-            // Disable swiping by setting allowPanToNext to false
-            photoswipe_options.allowPanToNext = false;
+            // Override gesture start event to block swiping
+            pswpInstance.listen('preventDragEvent', function (e, isDown, preventObj) {
+                // Check if the event is a touch or mouse drag
+                if (e.type.indexOf('touch') > -1 || e.type === 'mousedown') {
+                    // Prevent dragging/swiping
+                    preventObj.prevent = true;
+                    console.log('Swipe gesture blocked');
+                }
+            });
 
-            // Update the gallery data with the modified options
-            $gallery.data('photoSwipeOptions', photoswipe_options);
-            console.log('PhotoSwipe swiping disabled:', photoswipe_options); // Debug log
+            // Optionally, disable arrow navigation if you want only clicking disabled too
+            // pswpInstance.options.arrowEl = false;
         });
     }
+
+    // Call the function to set up the swipe block
+    blockPhotoSwipeSwiping();
 
     // if model viewer is found, create variant buttons
     function setupModelViewerVariants() {
