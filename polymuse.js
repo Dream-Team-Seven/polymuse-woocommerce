@@ -12,6 +12,8 @@ jQuery(document).ready(function ($) {
 
     blockPhotoSwipeSwiping();
 
+    $("<style>.pswp__container, .pswp__zoom-wrap { -ms-touch-action: none; touch-action: none; }</style>").appendTo("head");
+    
     // Function to disable PhotoSwipe swiping
     function blockPhotoSwipeSwiping() {
         // Wait for PhotoSwipe to initialize
@@ -29,8 +31,7 @@ jQuery(document).ready(function ($) {
                 }
             });
 
-            // Optionally, disable arrow navigation if you want only clicking disabled too
-            // pswpInstance.options.arrowEl = false;
+            pswpInstance.options.arrowEl = false;
         });
     }
 
