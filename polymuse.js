@@ -15,9 +15,7 @@ jQuery(document).ready(function ($) {
         console.log('Page fully loaded');
         // Turn grab off userInput class 
         const userInput = $('.userInput');
-        $(userInput).on('load', function () {
-            console.log('User input loaded');
-        });
+        console.log('userInput:', userInput);
     });
 
 
