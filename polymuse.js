@@ -11,12 +11,9 @@ jQuery(document).ready(function ($) {
     addVariantButtonOnClick();
 
 
-    $(window).on('load', function () {
-        console.log('Page fully loaded');
-        // Turn cursor grab off userInput class 
-        const userInput = $('.userInput');
-        console.log('userInput:', userInput);
-        $(userInput).css('cursor', 'auto');
+    $(document).on('load', '.userInput', function() {
+        console.log('userInput:', $(this));
+        $(this).css('cursor', 'auto');
     });
 
 
