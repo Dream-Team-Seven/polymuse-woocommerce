@@ -8,10 +8,10 @@ jQuery(document).ready(function ($) {
 
     setupModelViewerVariants();
 
-    // For variable product page
-    // changeVariantInputToLabel();
-
     addVariantButtonOnClick();
+
+    // Turn grab off userInput class 
+    $('.userInput').css('cursor', 'auto');
 
     // if model viewer is found, create variant buttons
     function setupModelViewerVariants() {
@@ -35,7 +35,7 @@ jQuery(document).ready(function ($) {
                 // Get material info for each variant
                 const variantInfo = {};
                 if (variants) {
-                    changeVariantInputToLabel(); 
+                    changeVariantInputToLabel();
                     variants.forEach(variant => {
                         modelViewer.variantName = variant;
                         const material = modelViewer.model.materials[0]; // Assuming first material
@@ -70,7 +70,7 @@ jQuery(document).ready(function ($) {
             console.log('Model Viewer element not found.');
         }
     }
-    
+
     // Change variant input to label
     function changeVariantInputToLabel() {
         const variantSelect = $('#variant');
@@ -123,6 +123,7 @@ jQuery(document).ready(function ($) {
             variantButtonsContainer.textContent = 'No variants available';
         }
     }
+
 });
 
 
