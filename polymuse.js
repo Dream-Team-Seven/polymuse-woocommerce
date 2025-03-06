@@ -10,6 +10,9 @@ jQuery(document).ready(function ($) {
 
     addVariantButtonOnClick(); 
 
+    // Add touch action styles
+    $("<style>.pswp__container, .pswp__zoom-wrap { -ms-touch-action: none; touch-action: none; }</style>").appendTo("head");
+
     // if model viewer is found, create variant buttons
     function setupModelViewerVariants() {
         // Get the model viewer element
