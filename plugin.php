@@ -133,7 +133,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         }
     }
     add_action('woocommerce_before_add_to_cart_form', 'add_buttons_container');
-
+    
     // Add model-viewer script to header
     function polymuse_add_model_viewer_script()
     {
@@ -149,6 +149,5 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     }
     add_action('wp_enqueue_scripts', 'polymuse_enqueue_assets');
 
-    // Block swiping on model viewer
-    remove_theme_support('wc-product-gallery-slider');
+   
 }

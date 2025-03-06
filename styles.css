@@ -50,9 +50,9 @@ model-viewer {
   height: 100%;
   width: 100%;
 }
-.polymuse-model-viewer {
+/* .polymuse-model-viewer {
     touch-action: none;
-}
+} */
 
 model-viewer::part(default-ar-button) {
   /* Apply custom styles to the default AR button */
