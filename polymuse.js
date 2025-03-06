@@ -8,10 +8,24 @@ jQuery(document).ready(function ($) {
 
     setupModelViewerVariants();
 
-    addVariantButtonOnClick(); 
+    addVariantButtonOnClick();
 
-    // Add touch action styles
-    $("<style>.pswp__container, .pswp__zoom-wrap { -ms-touch-action: none; touch-action: none; }</style>").appendTo("head");
+    disablePhotoSwipeSwiping();
+
+    // Function to disable PhotoSwipe swiping
+    function disablePhotoSwipeSwiping() {
+        $(document).on('wc-product-gallery-before-init', function (event, $gallery) {
+            // Get the existing PhotoSwipe options or initialize an empty object
+            var photoswipe_options = $gallery.data('photoSwipeOptions') || {};
+
+            // Disable swiping by setting allowPanToNext to false
+            photoswipe_options.allowPanToNext = false;
+
+            // Update the gallery data with the modified options
+            $gallery.data('photoSwipeOptions', photoswipe_options);
+            console.log('PhotoSwipe swiping disabled:', photoswipe_options); // Debug log
+        });
+    }
 
     // if model viewer is found, create variant buttons
     function setupModelViewerVariants() {
