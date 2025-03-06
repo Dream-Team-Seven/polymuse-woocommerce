@@ -134,17 +134,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     }
     add_action('woocommerce_before_add_to_cart_form', 'add_buttons_container');
 
-    // Block swiping product image
-    function custom_wc_gallery_slider_options($options)
-    {
-        $options['animation'] = 'slide'; // Keep sliding animation or set to false
-        $options['directionNav'] = false; // Remove navigation arrows
-        $options['controlNav'] = false; // Remove control dots
-        $options['slideshow'] = false; // Disable auto-sliding
-        return $options;
-    }
-    add_filter('woocommerce_single_product_carousel_options', 'custom_wc_gallery_slider_options');
-
     // Add model-viewer script to header
     function polymuse_add_model_viewer_script()
     {
@@ -160,4 +149,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     }
     add_action('wp_enqueue_scripts', 'polymuse_enqueue_assets');
 
+    // Block swiping on model viewer
+    remove_theme_support('wc-product-gallery-slider');
 }
