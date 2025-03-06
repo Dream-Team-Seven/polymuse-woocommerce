@@ -8,14 +8,7 @@ jQuery(document).ready(function ($) {
 
     setupModelViewerVariants();
 
-    addVariantButtonOnClick();
-
-
-    $(document).on('load', '.userInput', function() {
-        console.log('userInput:', $(this));
-        $(this).css('cursor', 'auto');
-    });
-
+    addVariantButtonOnClick(); 
 
     // if model viewer is found, create variant buttons
     function setupModelViewerVariants() {
