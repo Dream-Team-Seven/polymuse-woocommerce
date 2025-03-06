@@ -11,7 +11,10 @@ jQuery(document).ready(function ($) {
     addVariantButtonOnClick();
 
     // Turn grab off userInput class 
-    $('userInput').css('cursor', 'auto');
+    const userInput = $('.userInput');
+    $(userInput).on('load', function () {
+        console.log('User input loaded');
+    });
 
     // if model viewer is found, create variant buttons
     function setupModelViewerVariants() {
