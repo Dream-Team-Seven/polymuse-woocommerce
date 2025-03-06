@@ -143,7 +143,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             // wp_dequeue_script('flexslider');
             
             // // Remove WooCommerce gallery classes that trigger sliding
-            // add_filter('woocommerce_single_product_image_gallery_classes', 'polymuse_remove_slider_classes');
+            add_filter('woocommerce_single_product_image_gallery_classes', 'polymuse_remove_slider_classes');
             
             // Add custom CSS to prevent swiping
             add_action('wp_enqueue_scripts', 'polymuse_disable_swipe_css');
