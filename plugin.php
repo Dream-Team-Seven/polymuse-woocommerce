@@ -150,9 +150,15 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     add_action('wp_enqueue_scripts', 'polymuse_enqueue_assets');
 
     // Disable FlexSlider on single product pages
-    function polymuse_disable_flexslider()
-    {
-        return false; // Returning false disables FlexSlider
+    function polymuse_disable_flexslider() {
+        ?>
+        <script>
+        if (window.innerWidth <= 768) {
+            return false;
+        }
+        return true;
+        </script>
+        <?php
     }
     add_filter('woocommerce_single_product_flexslider_enabled', 'polymuse_disable_flexslider', 10);
 }
