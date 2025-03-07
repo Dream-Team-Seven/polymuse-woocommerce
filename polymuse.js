@@ -8,14 +8,9 @@ jQuery(document).ready(function ($) {
 
     setupModelViewerVariants();
 
-    addVariantButtonOnClick();
+    addVariantButtonOnClick();  
 
-    const mainImage = $('.woocommerce-product-gallery__image--main');
-    mainImage.on('touchmove', function (event) {
-        event.preventDefault();
-    });
-
-    // if model viewer is found, create variant buttons
+    // If model viewer is found, create variant buttons
     function setupModelViewerVariants() {
         // Get the model viewer element
         const modelViewer = $('model-viewer')[0];
