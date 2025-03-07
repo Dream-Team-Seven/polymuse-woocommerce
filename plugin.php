@@ -110,7 +110,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 // with out this when you select a variant product  there will be a place holder image out of place
                 // The down side is then the main product image will not show up in the carousel or thumb nail
                 // A benefit is that when you select a variant the main image will not change and show the model viewer
-                if (wp_is_mobile()) {
+                if (!wp_is_mobile()) {
                     $html = '<style>.woocommerce-product-gallery__image--placeholder:first-child { display: none; }</style>';
                 }
                 error_log('Modified HTML: ' . $html);
