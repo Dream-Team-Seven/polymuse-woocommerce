@@ -149,4 +149,13 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     }
     add_action('wp_enqueue_scripts', 'polymuse_enqueue_assets');
 
+    // Disable FlexSlider on single product pages
+    function polymuse_disable_flexslider()
+    {
+        if (wp_is_mobile()) {
+            return false; // Disable FlexSlider on mobile devices
+        }
+        return true; // Enable FlexSlider on non-mobile devices
+    }
+    add_filter('woocommerce_single_product_flexslider_enabled', 'polymuse_disable_flexslider', 10);
 }
