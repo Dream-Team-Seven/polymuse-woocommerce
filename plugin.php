@@ -154,5 +154,12 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     {
         return false; // Returning false disables FlexSlider
     }
-    add_filter('woocommerce_single_product_flexslider_enabled', 'polymuse_disable_flexslider', 10);
+    // add_filter('woocommerce_single_product_flexslider_enabled', 'polymuse_disable_flexslider', 10);
+
+    // Disable photoSwipe on single product pages
+    function polymuse_disable_photoswipe()
+    {
+        return false; // Returning false disables PhotoSwipe
+    }
+    add_filter('woocommerce_single_product_photoswipe_enabled', 'polymuse_disable_photoswipe', 10);
 }
