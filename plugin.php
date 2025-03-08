@@ -103,7 +103,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $model_viewer .= 'data-thumb-srcset="' . esc_url($model_thumbnail_url) . ' 100w" ';
                 $model_viewer .= 'data-thumb-sizes="(max-width: 100px) 100vw, 100px" ';
                 $model_viewer .= 'class="woocommerce-product-gallery__image polymuse-model-viewer" ">';
-                $model_viewer .= '<model-viewer src="' . esc_url($model_url) . '" alt="3D model of ' . esc_attr($product->get_name()) . '" auto-rotate camera-controls ar ar-modes="webxr scene-viewer quick-look" style="width: 100%; height: 100%;"></model-viewer>';
+                $model_viewer .= '<model-viewer src="' . esc_url($model_url) . '" alt="3D model of ' . esc_attr($product->get_name()) . '" auto-rotate camera-controls ar ar-modes="webxr scene-viewer quick-look" style="width: 100%; height: 100%;">';
+                $model_viewer .= ' <button class="ar-button" slot="ar-button" data-umami-event="AR Experiences"><i class="fa-solid fa-cube"></i><span>View in your space</span></button>';               
+                $model_viewer .= '</model-viewer>';
                 $model_viewer .= '</div>';
 
                 // Hide default this will make selecting variants work properly
