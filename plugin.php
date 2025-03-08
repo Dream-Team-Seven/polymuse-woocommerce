@@ -111,7 +111,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
         if (!empty($model_url)) {
             // Create thumbnail URL for the 3D model
-            $model_thumbnail_url = plugins_url('3d-model-thumbnail.png', __FILE__);
+            $model_thumbnail_url = plugins_url('3d.webp', __FILE__);
             error_log('Model Thumbnail URL: ' . $model_thumbnail_url);
 
             // Check if this is the first image in the gallery
@@ -128,7 +128,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $model_viewer .= '<model-viewer 
                   id="product-model"
                   class="media-item active"
-                  src="' . esc_url($model_url) . '"
+                  src="' . esc_url($modelviewer_config["model_url"]) . '"
                   ios-src="' . esc_url($modelviewer_config["ios_model_url"]) . '"
                   alt="3D model viewer"
                   shadow-intensity="1"
