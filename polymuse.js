@@ -27,8 +27,7 @@ jQuery(document).ready(function ($) {
                 const model = modelViewer.model;
                 console.log('Model:', model);
 
-                const materials = modelViewer.model.materials;
-                ;
+                // const materials = modelViewer.model.materials;                
 
                 // Check for available variants
                 const variants = modelViewer.availableVariants;
@@ -113,8 +112,7 @@ jQuery(document).ready(function ($) {
 
     // Add on click event to variant buttons
     function addVariantButtonOnClick() {
-        const variantButtonsContainer = $('#variant-options-container')[0];
-        console.log('variantButtonsContainer:', variantButtonsContainer);
+        const variantButtonsContainer = $('#variant-options-container')[0];        
         if (variantButtonsContainer) {
             $(variantButtonsContainer).on('click', 'button', function () {
                 const variant = $(this).text();
@@ -160,7 +158,7 @@ jQuery(document).ready(function ($) {
     }
     function setupEventListeners() {
         // QR Code button
-        $('qrButton').on('click', function() {
+        $('.qrButton').first().on('click', function() {
             console.log('QR button clicked');
             qrPopup.fadeIn();
         });
