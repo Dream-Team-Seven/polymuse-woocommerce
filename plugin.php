@@ -153,8 +153,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $model_viewer .= '  ' . ($modelviewer_config["polymuse_branding"] ? '<a class="polymuse-branding" href="https://polymymuse.tech" target="_blank" rel="noopener noreferrer"><i class="fa-layer-group fa-solid"></i> Polymuse.</a>' : '');
                 $model_viewer .= '  <!-- Controls -->';
                 $model_viewer .= '  <div class="model-controls">';
-                $model_viewer .= '    ' . ($modelviewer_config["show_qr_code_button"] ? '<button class="wp-element-button qr-button control-button" data-umami-event="QR Code button"><i class="fa-solid fa-qrcode"></i><span>View in your space</span></button>' : '');
-                $model_viewer .= '    ' . ($modelviewer_config["show_dimensions_button"] ? '<button class="wp-element-button control-button dimensions-button"><i class="fa-solid fa-ruler"></i><span>Show Dimensions</span></button>' : '');
+                $model_viewer .= '    ' . ($modelviewer_config["show_qr_code_button"] ? '<button class="qr-button control-button" data-umami-event="QR Code button"><i class="fa-solid fa-qrcode"></i><span>View in your space</span></button>' : '');
+                $model_viewer .= '    ' . ($modelviewer_config["show_dimensions_button"] ? '<button class="control-button dimensions-button"><i class="fa-solid fa-ruler"></i><span>Show Dimensions</span></button>' : '');
                 $model_viewer .= '  </div>';
                 $model_viewer .= '</model-viewer>';
                 $model_viewer .= '</div>';
