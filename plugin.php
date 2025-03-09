@@ -110,69 +110,69 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         $model_config_json = get_post_meta($product->get_id(), '_3d_model_config_json', true);
         error_log('Model URL: ' . $model_config_json["model_url"]);
 
-        // if (!empty($model_config_json)) {
-        //     // Create thumbnail URL for the 3D model
-        //     $model_thumbnail_url = plugins_url('3d.webp', __FILE__);
-        //     error_log('Model Thumbnail URL: ' . $model_thumbnail_url);
+        if (!empty($model_config_json)) {
+            // Create thumbnail URL for the 3D model
+            $model_thumbnail_url = plugins_url('3d.webp', __FILE__);
+            error_log('Model Thumbnail URL: ' . $model_thumbnail_url);
 
-        //     // Check if this is the first image in the gallery
-        //     static $first_image = true;
+            // Check if this is the first image in the gallery
+            static $first_image = true;
 
-        //     if ($first_image) {
-        //         $first_image = false;
-        //         // Create the model viewer div
-        //         $model_viewer = '<div data-thumb="' . esc_url($model_thumbnail_url) . '" ';
-        //         $model_viewer .= 'data-thumb-alt="3D Model" ';
-        //         $model_viewer .= 'data-thumb-srcset="' . esc_url($model_thumbnail_url) . ' 100w" ';
-        //         $model_viewer .= 'data-thumb-sizes="(max-width: 100px) 100vw, 100px" ';
-        //         $model_viewer .= 'class="woocommerce-product-gallery__image polymuse-model-viewer" ">';
-        //         $model_viewer .= '<model-viewer 
-        //           id="product-model"
-        //           class="media-item active"
-        //           src="' . esc_url($model_config_json["model_url"]) . '"
-        //           ios-src="' . esc_url($model_config_json["ios_model_url"]) . '"
-        //           alt="3D model viewer"
-        //           shadow-intensity="1"
-        //           camera-controls
-        //           touch-action="pan-y"
-        //           camera-orbit="' . $model_config_json["camera_orbit"] . '"
-        //           min-camera-orbit="' . $model_config_json["min_camera_orbit"] . '"
-        //           max-camera-orbit="' . $model_config_json["max_camera_orbit"] . '"
-        //           ' . ($model_config_json["disable_zoom"] ? 'disable-zoom' : '') . '
-        //           ' . ($model_config_json["disable_pan"] ? 'disable-pan' : '') . '
-        //           ' . ($model_config_json["ar"] ? 'ar' : '') . '
-        //           ' . ($model_config_json["auto_rotate"] ? 'auto-rotate' : '') . '
-        //           ' . ($model_config_json["auto_rotate"] ? 'rotation-per-second="' . ($model_config_json["rotate_direction"] == 'left' ? '30deg' : '-30deg') . '"' : '') . '
-        //           dimension-system="' . $model_config_json["dimension_unit"] . '"
-        //           style="width: 100%; height: 100%; background-color: ' . ($model_config_json["is_transparent"] ? 'transparent' : $model_config_json["background_color"]) . ';"
-        //           data-config="' . json_encode($model_config_json) . '"
-        //         >';
-        //         $model_viewer .= '  <!-- AR button -->';
-        //         $model_viewer .= '<button class="ar-button" slot="ar-button" data-umami-event="AR Experiences"><i class="fa-solid fa-cube"></i><span>View in your space</span></button>';
-        //         $model_viewer .= '  <!-- Dimension hotspots will be added dynamically -->';
-        //         $model_viewer .= '  <!-- Branding -->';
-        //         $model_viewer .= '  ' . ($model_config_json["polymuse_branding"] ? '<a class="polymuse-branding" href="https://polymymuse.tech" target="_blank" rel="noopener noreferrer"><i class="fa-layer-group fa-solid"></i> Polymuse.</a>' : '');
-        //         $model_viewer .= '  <!-- Controls -->';
-        //         $model_viewer .= '  <div class="model-controls">';
-        //         $model_viewer .= '    ' . ($model_config_json["show_qr_code_button"] ? '<button class="qr-button control-button" data-umami-event="QR Code button"><i class="fa-solid fa-qrcode"></i><span>View in your space</span></button>' : '');
-        //         $model_viewer .= '    ' . ($model_config_json["show_dimensions_button"] ? '<button class="control-button dimensions-button"><i class="fa-solid fa-ruler"></i><span>Show Dimensions</span></button>' : '');
-        //         $model_viewer .= '  </div>';
-        //         $model_viewer .= '</model-viewer>';
-        //         $model_viewer .= '</div>';
+            if ($first_image) {
+                $first_image = false;
+                // Create the model viewer div
+                $model_viewer = '<div data-thumb="' . esc_url($model_thumbnail_url) . '" ';
+                $model_viewer .= 'data-thumb-alt="3D Model" ';
+                $model_viewer .= 'data-thumb-srcset="' . esc_url($model_thumbnail_url) . ' 100w" ';
+                $model_viewer .= 'data-thumb-sizes="(max-width: 100px) 100vw, 100px" ';
+                $model_viewer .= 'class="woocommerce-product-gallery__image polymuse-model-viewer" ">';
+                $model_viewer .= '<model-viewer 
+                  id="product-model"
+                  class="media-item active"
+                  src="' . esc_url($model_config_json["model_url"]) . '"
+                  ios-src="' . esc_url($model_config_json["ios_model_url"]) . '"
+                  alt="3D model viewer"
+                  shadow-intensity="1"
+                  camera-controls
+                  touch-action="pan-y"
+                  camera-orbit="' . $model_config_json["camera_orbit"] . '"
+                  min-camera-orbit="' . $model_config_json["min_camera_orbit"] . '"
+                  max-camera-orbit="' . $model_config_json["max_camera_orbit"] . '"
+                  ' . ($model_config_json["disable_zoom"] ? 'disable-zoom' : '') . '
+                  ' . ($model_config_json["disable_pan"] ? 'disable-pan' : '') . '
+                  ' . ($model_config_json["ar"] ? 'ar' : '') . '
+                  ' . ($model_config_json["auto_rotate"] ? 'auto-rotate' : '') . '
+                  ' . ($model_config_json["auto_rotate"] ? 'rotation-per-second="' . ($model_config_json["rotate_direction"] == 'left' ? '30deg' : '-30deg') . '"' : '') . '
+                  dimension-system="' . $model_config_json["dimension_unit"] . '"
+                  style="width: 100%; height: 100%; background-color: ' . ($model_config_json["is_transparent"] ? 'transparent' : $model_config_json["background_color"]) . ';"
+                  data-config="' . json_encode($model_config_json) . '"
+                >';
+                $model_viewer .= '  <!-- AR button -->';
+                $model_viewer .= '<button class="ar-button" slot="ar-button" data-umami-event="AR Experiences"><i class="fa-solid fa-cube"></i><span>View in your space</span></button>';
+                $model_viewer .= '  <!-- Dimension hotspots will be added dynamically -->';
+                $model_viewer .= '  <!-- Branding -->';
+                $model_viewer .= '  ' . ($model_config_json["polymuse_branding"] ? '<a class="polymuse-branding" href="https://polymymuse.tech" target="_blank" rel="noopener noreferrer"><i class="fa-layer-group fa-solid"></i> Polymuse.</a>' : '');
+                $model_viewer .= '  <!-- Controls -->';
+                $model_viewer .= '  <div class="model-controls">';
+                $model_viewer .= '    ' . ($model_config_json["show_qr_code_button"] ? '<button class="qr-button control-button" data-umami-event="QR Code button"><i class="fa-solid fa-qrcode"></i><span>View in your space</span></button>' : '');
+                $model_viewer .= '    ' . ($model_config_json["show_dimensions_button"] ? '<button class="control-button dimensions-button"><i class="fa-solid fa-ruler"></i><span>Show Dimensions</span></button>' : '');
+                $model_viewer .= '  </div>';
+                $model_viewer .= '</model-viewer>';
+                $model_viewer .= '</div>';
 
-        //         // Hide default this will make selecting variants work properly
-        //         // with out this when you select a variant product  there will be a place holder image out of place
-        //         // The down side is then the main product image will not show up in the carousel or thumb nail
-        //         // A benefit is that when you select a variant the main image will not change and show the model viewer
-        //         $html = '<style>.woocommerce-product-gallery__image--placeholder:first-child { display: none; }</style>';
-        //         error_log('Modified HTML: ' . $html);
-        //         return $model_viewer . $html;
-        //     }
-        // }
+                // Hide default this will make selecting variants work properly
+                // with out this when you select a variant product  there will be a place holder image out of place
+                // The down side is then the main product image will not show up in the carousel or thumb nail
+                // A benefit is that when you select a variant the main image will not change and show the model viewer
+                $html = '<style>.woocommerce-product-gallery__image--placeholder:first-child { display: none; }</style>';
+                error_log('Modified HTML: ' . $html);
+                return $model_viewer . $html;
+            }
+        }
 
         return $html;
     }
-    add_filter('woocommerce_single_product_image_thumbnail_html', 'polymuse_add_model_and_thumbnail_to_gallery', 10, 4);
+    // add_filter('woocommerce_single_product_image_thumbnail_html', 'polymuse_add_model_and_thumbnail_to_gallery', 10, 4);
 
     function add_buttons_container()
     {
