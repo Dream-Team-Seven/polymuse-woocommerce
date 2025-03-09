@@ -67,7 +67,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     //     }
     // }
     // add_action('woocommerce_process_product_meta', 'polymuse_save_custom_field');
-// Add custom field to product editor
+
+    // Add custom field to product editor
     function polymuse_custom_field()
     {
         global $post;
@@ -78,7 +79,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 'label' => '3D Model Config JSON',
                 'description' => 'Enter the JSON configuration for the 3D model viewer',
                 'desc_tip' => true,
-                'value' => $value, // Ensure current value is populated
+                'value' => $value,
+                'custom_attributes' => array('rows' => 10, 'cols' => 50) // Ensure enough space
             )
         );
     }
@@ -117,27 +119,31 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     add_action('woocommerce_process_product_meta', 'polymuse_save_custom_field');
 
     // Add 3D model to product gallery
-    function polymuse_add_model_and_thumbnail_to_gallery($html, $attachment_id)
-    {
-        global $product;
+    function polymuse_add_model_and_thumbnail_to_gallery($html, $attachment_id) {
+    global $product;
 
-        // Debug logging
-        // error_log('polymuse_add_model_and_thumbnail_to_gallery called');
-        // error_log('Attachment ID: ' . $attachment_id);
-        // error_log('HTML received: ' . $html);
+    // error_log('polymuse_add_model_and_thumbnail_to_gallery called');
+    // error_log('Attachment ID: ' . $attachment_id);
+    // error_log('HTML received: ' . $html);
 
-        if (!$product) {
-            error_log('No product found');
-            return $html;
-        }
+    if (!$product) {
+        error_log('No product found');
+        return $html;
+    }
 
-        $model_config_json = get_post_meta($product->get_id(), '_3d_model_config_json', true);
+    $model_config_json = get_post_meta($product->get_id(), '_3d_model_config_json', true);
+    if (empty($model_config_json)) {
+        error_log('No JSON config found');
+        return $html;
+    }
 
+    $config_array = json_decode($model_config_json, true);
+    if (json_last_error() !== JSON_ERROR_NONE || !is_array($config_array)) {
+        error_log('Invalid or missing JSON config: ' . $model_config_json);
+        return $html;
+    }
 
-        $config_array = json_decode($model_config_json, true);
-        error_log('Model URL: ' . $config_array['model_url']);
-
-
+    error_log('Model URL: ' . $config_array['model_url']);
         // if (!empty($model_config_json)) {
         //     // Create thumbnail URL for the 3D model
         //     $model_thumbnail_url = plugins_url('3d.webp', __FILE__);
