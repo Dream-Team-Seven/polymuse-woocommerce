@@ -216,7 +216,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     {
         wp_enqueue_style('polymuse-styles', plugins_url('styles.css', __FILE__));
         wp_enqueue_script('polymuse-script', plugins_url('polymuse.js', __FILE__), array('jquery'), '1.0', true);
-        wp_enqueue_script('polymuse-model-viewer',plugins_url('model-viewer-script.js', __FILE__));
         wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
     }
     add_action('wp_enqueue_scripts', 'polymuse_enqueue_assets');
