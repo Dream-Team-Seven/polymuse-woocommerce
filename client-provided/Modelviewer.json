@@ -12,7 +12,7 @@
   "is_transparent": true,
   "background_color": "#F5F5F5",
   "dimension_unit": "metric",
-  "polymuse_branding": false,
+  "polymuse_branding": true,
   "show_qr_code_button": true,
   "show_dimensions_button": true,
   "embed_url": "https://example.com/ar-view?product=123",
