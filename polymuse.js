@@ -159,7 +159,19 @@ jQuery(document).ready(function ($) {
 
         this.qrPopup = qrPopup;
     }
+    function setupEventListeners() {
+        // QR Code button
+        $('#qrButton').on('click', function() {
+            qrPopup.fadeIn();
+        });
 
+        // Close button and overlay
+        $('.qr-popup-close, .qr-popup-overlay').on('click', function() {
+            qrPopup.fadeOut();
+        });
+    }
+
+    setupEventListeners();
 
 });
 
