@@ -111,7 +111,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         }
 
         $model_config_json = get_post_meta($product->get_id(), '_3d_model_config_json', true);
-        error_log('Model URL: ' . $model_config_json["model_url"]);
+        // error_log('Model URL: ' . $model_config_json["model_url"]);
 
         // if (!empty($model_config_json)) {
         //     // Create thumbnail URL for the 3D model
