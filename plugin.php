@@ -112,12 +112,19 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
         $model_config_json = get_post_meta($product->get_id(), '_3d_model_config_json', true);
 
+        // Remove unnecessary characters from the JSON string
+        $model_config_json = str_replace('rn', '', $model_config_json);
+        $model_config_json = trim($model_config_json);
+        
         // Decode the JSON string into an array
         $model_config_array = json_decode($model_config_json, true);
-
+        
         // Now you can access the array keys
-        error_log('Model URL: ' . $model_config_array["model_url"]);
-
+        // if (isset($model_config_array["model_url"])) {
+            error_log('Model URL: ' . $model_config_array["model_url"]);
+        // } else {
+            // error_log('Model URL is not set');
+        // }
         // if (!empty($model_config_json)) {
         //     // Create thumbnail URL for the 3D model
         //     $model_thumbnail_url = plugins_url('3d.webp', __FILE__);
