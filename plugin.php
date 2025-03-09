@@ -67,16 +67,18 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     //     }
     // }
     // add_action('woocommerce_process_product_meta', 'polymuse_save_custom_field');
-
-    // Add custom field to product editor
+// Add custom field to product editor
     function polymuse_custom_field()
     {
+        global $post;
+        $value = get_post_meta($post->ID, '_3d_model_config_json', true);
         woocommerce_wp_textarea_input(
             array(
                 'id' => '_3d_model_config_json',
                 'label' => '3D Model Config JSON',
                 'description' => 'Enter the JSON configuration for the 3D model viewer',
                 'desc_tip' => true,
+                'value' => $value, // Ensure current value is populated
             )
         );
     }
@@ -85,14 +87,28 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     // Save custom field data
     function polymuse_save_custom_field($post_id)
     {
-        $model_config_json = $_POST['_3d_model_config_json'];
-        if (!empty($model_config_json)) {
-            // Validate JSON before saving
-            if (json_decode($model_config_json) !== null) {
-                update_post_meta($post_id, '_3d_model_config_json', $model_config_json); // Store as string
+        // Debug the POST data
+        error_log('POST data: ' . print_r($_POST, true));
+
+        if (isset($_POST['_3d_model_config_json'])) {
+            $model_config_json = $_POST['_3d_model_config_json'];
+            error_log('Raw JSON input: ' . $model_config_json);
+
+            if (!empty($model_config_json)) {
+                // Attempt to decode to verify it's valid JSON
+                $decoded = json_decode($model_config_json);
+                if ($decoded === null) {
+                    error_log('Invalid JSON provided: ' . $model_config_json);
+                    wp_die('Invalid JSON format in 3D Model Config'); // Fail hard as requested
+                }
+                update_post_meta($post_id, '_3d_model_config_json', $model_config_json);
+                error_log('JSON saved: ' . $model_config_json);
+            } else {
+                update_post_meta($post_id, '_3d_model_config_json', '');
+                error_log('Empty JSON saved');
             }
         } else {
-            update_post_meta($post_id, '_3d_model_config_json', '');
+            error_log('No _3d_model_config_json in POST data');
         }
     }
     add_action('woocommerce_process_product_meta', 'polymuse_save_custom_field');
@@ -114,17 +130,10 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
         $model_config_json = get_post_meta($product->get_id(), '_3d_model_config_json', true);
 
-        // Safely handle the JSON data
-        // if ($model_config_json) {
-            $config_array = json_decode($model_config_json, true);
-            // if (json_last_error() === JSON_ERROR_NONE && is_array($config_array) && isset($config_array['model_url'])) {
-                error_log('Model URL: ' . $config_array['model_url']);
-            // } else {
-            //     error_log('Invalid or missing JSON config: ' . $model_config_json);
-            // }
-        // } else {
-        //     error_log('No model config JSON found');
-        // }
+
+        $config_array = json_decode($model_config_json, true);
+        error_log('Model URL: ' . $config_array['model_url']);
+
 
         // if (!empty($model_config_json)) {
         //     // Create thumbnail URL for the 3D model
