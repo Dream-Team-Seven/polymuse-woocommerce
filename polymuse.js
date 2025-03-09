@@ -22,15 +22,13 @@ jQuery(document).ready(function ($) {
         // Get the model viewer element
         const modelViewer = $('model-viewer')[0];
         if (modelViewer) {
-            console.log('Model viewer found:', modelViewer);
-
             $(modelViewer).on('load', () => {
                 console.log('Model viewer loaded (event fired)');
                 const model = modelViewer.model;
                 console.log('Model:', model);
 
                 const materials = modelViewer.model.materials;
-                console.log(materials);
+                ;
 
                 // Check for available variants
                 const variants = modelViewer.availableVariants;
@@ -162,7 +160,8 @@ jQuery(document).ready(function ($) {
     }
     function setupEventListeners() {
         // QR Code button
-        $('#qrButton').on('click', function() {
+        $('qrButton').on('click', function() {
+            console.log('QR button clicked');
             qrPopup.fadeIn();
         });
 
