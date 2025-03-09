@@ -146,6 +146,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                   style="width: 100%; height: 100%; background-color: ' . ($modelviewer_config["is_transparent"] ? 'transparent' : $modelviewer_config["background_color"]) . ';"
                   data-config="' . json_encode($modelviewer_config) . '"
                 >';
+                $model_viewer .= '  <!-- AR button -->';
+                $model_viewer .= '<button class="ar-button" slot="ar-button" data-umami-event="AR Experiences"><i class="fa-solid fa-cube"></i><span>View in your space</span></button>';
                 $model_viewer .= '  <!-- Dimension hotspots will be added dynamically -->';
                 $model_viewer .= '  <!-- Branding -->';
                 $model_viewer .= '  ' . ($modelviewer_config["polymuse_branding"] ? '<a class="polymuse-branding" href="https://polymymuse.tech" target="_blank" rel="noopener noreferrer"><i class="fa-layer-group fa-solid"></i> Polymuse.</a>' : '');
@@ -197,11 +199,11 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     {
         wp_enqueue_style('polymuse-styles', plugins_url('styles.css', __FILE__));
         wp_enqueue_script('polymuse-script', plugins_url('polymuse.js', __FILE__), array('jquery'), '1.0', true);
-        wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css' );
+        wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
     }
     add_action('wp_enqueue_scripts', 'polymuse_enqueue_assets');
 
-    
+
     // Disable FlexSlider on single product pages
     function polymuse_disable_flexslider()
     {
