@@ -115,16 +115,16 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         $model_config_json = get_post_meta($product->get_id(), '_3d_model_config_json', true);
 
         // Safely handle the JSON data
-        if ($model_config_json) {
+        // if ($model_config_json) {
             $config_array = json_decode($model_config_json, true);
-            if (json_last_error() === JSON_ERROR_NONE && is_array($config_array) && isset($config_array['model_url'])) {
+            // if (json_last_error() === JSON_ERROR_NONE && is_array($config_array) && isset($config_array['model_url'])) {
                 error_log('Model URL: ' . $config_array['model_url']);
-            } else {
-                error_log('Invalid or missing JSON config: ' . $model_config_json);
-            }
-        } else {
-            error_log('No model config JSON found');
-        }
+            // } else {
+            //     error_log('Invalid or missing JSON config: ' . $model_config_json);
+            // }
+        // } else {
+        //     error_log('No model config JSON found');
+        // }
 
         // if (!empty($model_config_json)) {
         //     // Create thumbnail URL for the 3D model
