@@ -158,7 +158,7 @@ jQuery(document).ready(function ($) {
     }
     function setupEventListeners() {
         // QR Code button
-        $('.qrButton').first().on('click', function() {
+        $('qrButton').first().on('click', function() {
             console.log('QR button clicked');
             qrPopup.fadeIn();
         });
