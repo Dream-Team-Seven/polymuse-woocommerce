@@ -44,14 +44,38 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     }
     add_action('plugins_loaded', 'my_polymuse_theme_warning_plugin_init');
 
-    // Add custom field to product editor
+    // // Add custom field to product editor
+    // function polymuse_custom_field()
+    // {
+    //     woocommerce_wp_text_input(
+    //         array(
+    //             'id' => '_3d_model_url',
+    //             'label' => '3D Model URL',
+    //             'description' => 'Enter the URL of the 3D model file (e.g., .glb or .gltf)',
+    //             'desc_tip' => true,
+    //         )
+    //     );
+    // }
+    // add_action('woocommerce_product_options_general_product_data', 'polymuse_custom_field');
+
+    // // Save custom field data
+    // function polymuse_save_custom_field($post_id)
+    // {
+    //     $model_url = $_POST['_3d_model_url'];
+    //     if (!empty($model_url)) {
+    //         update_post_meta($post_id, '_3d_model_url', esc_url($model_url));
+    //     }
+    // }
+    // add_action('woocommerce_process_product_meta', 'polymuse_save_custom_field');
+
+    // Add custom field to product editor 3d_model_config_json
     function polymuse_custom_field()
     {
-        woocommerce_wp_text_input(
+        woocommerce_wp_textarea_input(
             array(
-                'id' => '_3d_model_url',
-                'label' => '3D Model URL',
-                'description' => 'Enter the URL of the 3D model file (e.g., .glb or .gltf)',
+                'id' => '_3d_model_config_json',
+                'label' => '3D Model Config JSON',
+                'description' => 'Enter the JSON configuration for the 3D model viewer',
                 'desc_tip' => true,
             )
         );
@@ -59,42 +83,19 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     add_action('woocommerce_product_options_general_product_data', 'polymuse_custom_field');
 
     // Save custom field data
+
     function polymuse_save_custom_field($post_id)
     {
-        $model_url = $_POST['_3d_model_url'];
-        if (!empty($model_url)) {
-            update_post_meta($post_id, '_3d_model_url', esc_url($model_url));
+        $model_config_json = $_POST['_3d_model_config_json'];
+        if (!empty($model_config_json)) {
+            update_post_meta($post_id, '_3d_model_config_json', esc_url($model_config_json));
         }
     }
-    add_action('woocommerce_process_product_meta', 'polymuse_save_custom_field');
 
     // Add 3D model to product gallery
-
     function polymuse_add_model_and_thumbnail_to_gallery($html, $attachment_id)
     {
         global $product;
-
-        // Hardcoded JSON data
-        $modelviewer_config = array(
-            "model_url" => "https://firebasestorage.googleapis.com/v0/b/polymuse-68692.appspot.com/o/SheenChair.glb?alt=media&token=8185cacb-4460-485d-9e87-88e3a64086c2",
-            "ios_model_url" => "",
-            "camera_orbit" => "0deg 75deg 2m",
-            "min_camera_orbit" => "auto 45deg auto",
-            "max_camera_orbit" => "auto 75deg auto",
-            "disable_zoom" => false,
-            "disable_pan" => false,
-            "ar" => true,
-            "auto_rotate" => false,
-            "rotate_direction" => "right",
-            "is_transparent" => true,
-            "background_color" => "#F5F5F5",
-            "dimension_unit" => "metric",
-            "polymuse_branding" => true,
-            "show_qr_code_button" => true,
-            "show_dimensions_button" => true,
-            "embed_url" => "https://example.com/ar-view?product=123",
-            "website_id" => "your-analytics-id"
-        );
 
         // Debug logging
         error_log('polymuse_add_model_and_thumbnail_to_gallery called');
@@ -106,10 +107,10 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             return $html;
         }
 
-        $model_url = get_post_meta($product->get_id(), '_3d_model_url', true);
-        error_log('Model URL: ' . $model_url);
+        $model_config_json = get_post_meta($product->get_id(), '_3d_model_config_json', true);
+        error_log('Model URL: ' . $model_config_json["model_url"]);
 
-        if (!empty($model_url)) {
+        if (!empty($model_config_json)) {
             // Create thumbnail URL for the 3D model
             $model_thumbnail_url = plugins_url('3d.webp', __FILE__);
             error_log('Model Thumbnail URL: ' . $model_thumbnail_url);
@@ -128,33 +129,33 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $model_viewer .= '<model-viewer 
                   id="product-model"
                   class="media-item active"
-                  src="' . esc_url($modelviewer_config["model_url"]) . '"
-                  ios-src="' . esc_url($modelviewer_config["ios_model_url"]) . '"
+                  src="' . esc_url($model_config_json["model_url"]) . '"
+                  ios-src="' . esc_url($model_config_json["ios_model_url"]) . '"
                   alt="3D model viewer"
                   shadow-intensity="1"
                   camera-controls
                   touch-action="pan-y"
-                  camera-orbit="' . $modelviewer_config["camera_orbit"] . '"
-                  min-camera-orbit="' . $modelviewer_config["min_camera_orbit"] . '"
-                  max-camera-orbit="' . $modelviewer_config["max_camera_orbit"] . '"
-                  ' . ($modelviewer_config["disable_zoom"] ? 'disable-zoom' : '') . '
-                  ' . ($modelviewer_config["disable_pan"] ? 'disable-pan' : '') . '
-                  ' . ($modelviewer_config["ar"] ? 'ar' : '') . '
-                  ' . ($modelviewer_config["auto_rotate"] ? 'auto-rotate' : '') . '
-                  ' . ($modelviewer_config["auto_rotate"] ? 'rotation-per-second="' . ($modelviewer_config["rotate_direction"] == 'left' ? '30deg' : '-30deg') . '"' : '') . '
-                  dimension-system="' . $modelviewer_config["dimension_unit"] . '"
-                  style="width: 100%; height: 100%; background-color: ' . ($modelviewer_config["is_transparent"] ? 'transparent' : $modelviewer_config["background_color"]) . ';"
-                  data-config="' . json_encode($modelviewer_config) . '"
+                  camera-orbit="' . $model_config_json["camera_orbit"] . '"
+                  min-camera-orbit="' . $model_config_json["min_camera_orbit"] . '"
+                  max-camera-orbit="' . $model_config_json["max_camera_orbit"] . '"
+                  ' . ($model_config_json["disable_zoom"] ? 'disable-zoom' : '') . '
+                  ' . ($model_config_json["disable_pan"] ? 'disable-pan' : '') . '
+                  ' . ($model_config_json["ar"] ? 'ar' : '') . '
+                  ' . ($model_config_json["auto_rotate"] ? 'auto-rotate' : '') . '
+                  ' . ($model_config_json["auto_rotate"] ? 'rotation-per-second="' . ($model_config_json["rotate_direction"] == 'left' ? '30deg' : '-30deg') . '"' : '') . '
+                  dimension-system="' . $model_config_json["dimension_unit"] . '"
+                  style="width: 100%; height: 100%; background-color: ' . ($model_config_json["is_transparent"] ? 'transparent' : $model_config_json["background_color"]) . ';"
+                  data-config="' . json_encode($model_config_json) . '"
                 >';
                 $model_viewer .= '  <!-- AR button -->';
                 $model_viewer .= '<button class="ar-button" slot="ar-button" data-umami-event="AR Experiences"><i class="fa-solid fa-cube"></i><span>View in your space</span></button>';
                 $model_viewer .= '  <!-- Dimension hotspots will be added dynamically -->';
                 $model_viewer .= '  <!-- Branding -->';
-                $model_viewer .= '  ' . ($modelviewer_config["polymuse_branding"] ? '<a class="polymuse-branding" href="https://polymymuse.tech" target="_blank" rel="noopener noreferrer"><i class="fa-layer-group fa-solid"></i> Polymuse.</a>' : '');
+                $model_viewer .= '  ' . ($model_config_json["polymuse_branding"] ? '<a class="polymuse-branding" href="https://polymymuse.tech" target="_blank" rel="noopener noreferrer"><i class="fa-layer-group fa-solid"></i> Polymuse.</a>' : '');
                 $model_viewer .= '  <!-- Controls -->';
                 $model_viewer .= '  <div class="model-controls">';
-                $model_viewer .= '    ' . ($modelviewer_config["show_qr_code_button"] ? '<button class="qr-button control-button" data-umami-event="QR Code button"><i class="fa-solid fa-qrcode"></i><span>View in your space</span></button>' : '');
-                $model_viewer .= '    ' . ($modelviewer_config["show_dimensions_button"] ? '<button class="control-button dimensions-button"><i class="fa-solid fa-ruler"></i><span>Show Dimensions</span></button>' : '');
+                $model_viewer .= '    ' . ($model_config_json["show_qr_code_button"] ? '<button class="qr-button control-button" data-umami-event="QR Code button"><i class="fa-solid fa-qrcode"></i><span>View in your space</span></button>' : '');
+                $model_viewer .= '    ' . ($model_config_json["show_dimensions_button"] ? '<button class="control-button dimensions-button"><i class="fa-solid fa-ruler"></i><span>Show Dimensions</span></button>' : '');
                 $model_viewer .= '  </div>';
                 $model_viewer .= '</model-viewer>';
                 $model_viewer .= '</div>';
