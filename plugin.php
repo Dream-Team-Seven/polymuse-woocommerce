@@ -69,6 +69,19 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     // add_action('woocommerce_process_product_meta', 'polymuse_save_custom_field');
 
     // Add custom field to product editor
+    // Save custom field data
+    function polymuse_save_custom_field($post_id)
+    {
+        if (isset($_POST['_3d_model_config_json'])) {
+            $model_config_json = stripslashes($_POST['_3d_model_config_json']);
+            update_post_meta($post_id, '_3d_model_config_json', $model_config_json);
+        } else {
+            update_post_meta($post_id, '_3d_model_config_json', '');
+        }
+    }
+    add_action('woocommerce_process_product_meta', 'polymuse_save_custom_field');
+
+    // Add custom field to product editor
     function polymuse_custom_field()
     {
         global $post;
@@ -86,63 +99,33 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     }
     add_action('woocommerce_product_options_general_product_data', 'polymuse_custom_field');
 
-    // Save custom field data
-    function polymuse_save_custom_field($post_id)
-    {
-        error_log('Full POST array: ' . print_r($_POST, true));
-        if (isset($_POST['_3d_model_config_json'])) {
-            $model_config_json = $_POST['_3d_model_config_json'];
-            error_log('Raw JSON input: ' . $model_config_json);
-
-            if (!empty($model_config_json)) {
-                $model_config_json = trim($model_config_json);
-                error_log('Trimmed JSON input: ' . $model_config_json);
-
-                $decoded = json_decode($model_config_json);
-                if ($decoded === null) {
-                    $json_error = json_last_error_msg();
-                    error_log('Invalid JSON provided: ' . $model_config_json);
-                    error_log('JSON decode error: ' . $json_error);
-                    wp_die('Invalid JSON format in 3D Model Config: ' . $json_error);
-                }
-                update_post_meta($post_id, '_3d_model_config_json', $model_config_json);
-                error_log('JSON saved: ' . $model_config_json);
-            } else {
-                update_post_meta($post_id, '_3d_model_config_json', '');
-                error_log('Empty JSON saved');
-            }
-        } else {
-            error_log('No _3d_model_config_json in POST data');
-        }
-    }
-    add_action('woocommerce_process_product_meta', 'polymuse_save_custom_field');
-
     // Add 3D model to product gallery
-    function polymuse_add_model_and_thumbnail_to_gallery($html, $attachment_id) {
-    global $product;
+    function polymuse_add_model_and_thumbnail_to_gallery($html, $attachment_id)
+    {
+        global $product;
 
-    // error_log('polymuse_add_model_and_thumbnail_to_gallery called');
-    // error_log('Attachment ID: ' . $attachment_id);
-    // error_log('HTML received: ' . $html);
+        // error_log('polymuse_add_model_and_thumbnail_to_gallery called');
+        // error_log('Attachment ID: ' . $attachment_id);
+        // error_log('HTML received: ' . $html);
 
-    if (!$product) {
-        error_log('No product found');
-        return $html;
-    }
+        if (!$product) {
+            error_log('No product found');
+            return $html;
+        }
 
-    $model_config_json = get_post_meta($product->get_id(), '_3d_model_config_json', true);
-    if (empty($model_config_json)) {
-        error_log('No JSON config found');
-        return $html;
-    }
+        $model_config_json = get_post_meta($product->get_id(), '_3d_model_config_json', true);
+        if (empty($model_config_json)) {
+            error_log('No JSON config found');
+            return $html;
+        }
 
-    $config_array = json_decode($model_config_json, true);
-    if (json_last_error() !== JSON_ERROR_NONE || !is_array($config_array)) {
-        error_log('Invalid or missing JSON config: ' . $model_config_json);
-        return $html;
-    }
+        $config_array = json_decode($model_config_json, true);
+        if (json_last_error() !== JSON_ERROR_NONE || !is_array($config_array)) {
+            error_log('Invalid or missing JSON config: ' . $model_config_json);
+            return $html;
+        }
 
-    error_log('Model URL: ' . $config_array['model_url']);
+        error_log('Model URL: ' . $config_array['model_url']);
         // if (!empty($model_config_json)) {
         //     // Create thumbnail URL for the 3D model
         //     $model_thumbnail_url = plugins_url('3d.webp', __FILE__);
