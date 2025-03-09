@@ -8,7 +8,13 @@ jQuery(document).ready(function ($) {
 
     setupModelViewerVariants();
 
-    addVariantButtonOnClick();  
+    addVariantButtonOnClick();
+
+    //_________________----------------------_________________________
+
+    createQRDialog();
+
+    //_________________----------------------_________________________
 
     // If model viewer is found, create variant buttons
     function setupModelViewerVariants() {
@@ -120,6 +126,40 @@ jQuery(document).ready(function ($) {
             variantButtonsContainer.textContent = 'No variants available';
         }
     }
+
+    ///_________________----------------------_________________________
+
+    function createQRDialog() {
+        // Check if dialog already exists
+        let qrPopup = $('.qr-popup').first();
+
+        if (!qrPopup.length) {
+            // Create a popup that matches the screenshot
+            qrPopup = $('<div>')
+                .addClass('qr-popup')
+                .css('display', 'none')
+                .appendTo('body')
+                .html(`
+              <div class="qr-popup-overlay"></div>
+              <div class="qr-popup-content">
+                <div class="qr-popup-header">
+                  <h3>Scan QR Code</h3>
+                  <button class="qr-popup-close">&times;</button>
+                </div>
+                <div class="qr-popup-body">
+                  <p>Point your camera to scan the QR code to view this product in AR - see how it looks in your space!</p>
+                  <div class="qr-code-container"></div>
+                  <div class="qr-requirements">
+                    Minimum requirement: iOS 13, iPadOS 13 or Android with ARCore 1.9 or higher
+                  </div>
+                </div>
+              </div>
+            `);
+        }
+
+        this.qrPopup = qrPopup;
+    }
+
 
 });
 
