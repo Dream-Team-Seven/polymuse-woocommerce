@@ -173,7 +173,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         //     }
         // }
 
-        // return $html;
+        return $html;
     }
     add_filter('woocommerce_single_product_image_thumbnail_html', 'polymuse_add_model_and_thumbnail_to_gallery', 10, 4);
 
