@@ -89,8 +89,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     // Save custom field data
     function polymuse_save_custom_field($post_id)
     {
-        error_log('POST data received: ' . print_r($_POST, true));
-
+        error_log('Full POST array: ' . print_r($_POST, true));
         if (isset($_POST['_3d_model_config_json'])) {
             $model_config_json = $_POST['_3d_model_config_json'];
             error_log('Raw JSON input: ' . $model_config_json);
