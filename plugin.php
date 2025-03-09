@@ -68,7 +68,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     // }
     // add_action('woocommerce_process_product_meta', 'polymuse_save_custom_field');
 
-    // Add custom field to product editor 3d_model_config_json
+    // Add custom field to product editor
     function polymuse_custom_field()
     {
         woocommerce_wp_textarea_input(
@@ -83,12 +83,14 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     add_action('woocommerce_product_options_general_product_data', 'polymuse_custom_field');
 
     // Save custom field data
-
     function polymuse_save_custom_field($post_id)
     {
         $model_config_json = $_POST['_3d_model_config_json'];
         if (!empty($model_config_json)) {
-            update_post_meta($post_id, '_3d_model_config_json', json_encode($model_config_json));
+            // Validate JSON before saving
+            if (json_decode($model_config_json) !== null) {
+                update_post_meta($post_id, '_3d_model_config_json', $model_config_json); // Store as string
+            }
         } else {
             update_post_meta($post_id, '_3d_model_config_json', '');
         }
@@ -112,19 +114,18 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
         $model_config_json = get_post_meta($product->get_id(), '_3d_model_config_json', true);
 
-        // Remove unnecessary characters from the JSON string
-        $model_config_json = str_replace('rn', '', $model_config_json);
-        $model_config_json = trim($model_config_json);
-        
-        // Decode the JSON string into an array
-        $model_config_array = json_decode($model_config_json, true);
-        
-        // Now you can access the array keys
-        // if (isset($model_config_array["model_url"])) {
-            error_log('Model URL: ' . $model_config_array["model_url"]);
-        // } else {
-            // error_log('Model URL is not set');
-        // }
+        // Safely handle the JSON data
+        if ($model_config_json) {
+            $config_array = json_decode($model_config_json, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($config_array) && isset($config_array['model_url'])) {
+                error_log('Model URL: ' . $config_array['model_url']);
+            } else {
+                error_log('Invalid or missing JSON config: ' . $model_config_json);
+            }
+        } else {
+            error_log('No model config JSON found');
+        }
+
         // if (!empty($model_config_json)) {
         //     // Create thumbnail URL for the 3D model
         //     $model_thumbnail_url = plugins_url('3d.webp', __FILE__);
@@ -185,9 +186,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         //     }
         // }
 
-        // return $html;
+        return $html;
     }
-    add_filter('woocommerce_single_product_image_thumbnail_html', 'polymuse_add_model_and_thumbnail_to_gallery', 10, 4);
+    add_filter('woocommerce_single_product_image_thumbnail_html', 'polymuse_add_model_and_thumbnail_to_gallery', 10, 2);
 
     function add_buttons_container()
     {
