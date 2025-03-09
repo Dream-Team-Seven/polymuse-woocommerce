@@ -105,10 +105,10 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         error_log('Attachment ID: ' . $attachment_id);
         error_log('HTML received: ' . $html);
 
-        // if (!$product) {
-        //     error_log('No product found');
-        //     return $html;
-        // }
+        if (!$product) {
+            error_log('No product found');
+            return $html;
+        }
 
         // $model_config_json = get_post_meta($product->get_id(), '_3d_model_config_json', true);
         // error_log('Model URL: ' . $model_config_json["model_url"]);
