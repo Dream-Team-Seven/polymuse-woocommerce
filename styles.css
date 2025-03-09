@@ -111,6 +111,8 @@ model-viewer::part(default-progress-bar) {
 
 .ar-button i {
   font-size: 20px;
+  color: black;
+  border: 1px solid black;
 }
 
 .model-controls {
