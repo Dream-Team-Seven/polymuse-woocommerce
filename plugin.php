@@ -94,11 +94,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             error_log('Raw JSON input: ' . $model_config_json);
 
             if (!empty($model_config_json)) {
-                // Trim whitespace and log the exact input
                 $model_config_json = trim($model_config_json);
                 error_log('Trimmed JSON input: ' . $model_config_json);
 
-                // Attempt to decode and check for errors
                 $decoded = json_decode($model_config_json);
                 if ($decoded === null) {
                     $json_error = json_last_error_msg();
