@@ -88,9 +88,12 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     {
         $model_config_json = $_POST['_3d_model_config_json'];
         if (!empty($model_config_json)) {
-            update_post_meta($post_id, '_3d_model_config_json', esc_url($model_config_json));
+            update_post_meta($post_id, '_3d_model_config_json', json_encode($model_config_json));
+        } else {
+            update_post_meta($post_id, '_3d_model_config_json', '');
         }
     }
+    add_action('woocommerce_process_product_meta', 'polymuse_save_custom_field');
 
     // Add 3D model to product gallery
     function polymuse_add_model_and_thumbnail_to_gallery($html, $attachment_id)
@@ -172,7 +175,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
         return $html;
     }
-    // add_filter('woocommerce_single_product_image_thumbnail_html', 'polymuse_add_model_and_thumbnail_to_gallery', 10, 4);
+    add_filter('woocommerce_single_product_image_thumbnail_html', 'polymuse_add_model_and_thumbnail_to_gallery', 10, 4);
 
     function add_buttons_container()
     {
