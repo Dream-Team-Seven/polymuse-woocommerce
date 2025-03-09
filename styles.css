@@ -88,21 +88,19 @@ model-viewer::part(default-progress-bar) {
 }
 
 .ar-button {
-  position: fixed;
-  bottom: 64px;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: white;
+  background: white;
   padding: 8px 16px;
-  border-radius: 9999px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  border:#0000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: none;
+  color: black;
+  border: 1px solid black;
   cursor: pointer;
   transition: background-color 0.2s;
-  z-index: 10;
 }
 
 .ar-button:hover {
@@ -111,12 +109,10 @@ model-viewer::part(default-progress-bar) {
 
 .ar-button i {
   font-size: 20px;
-  color: black;
+
 }
 
-.ar-button span {
-  color: black;
-}
+
 
 .model-controls {
   position: fixed;
