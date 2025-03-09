@@ -87,19 +87,24 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     // Save custom field data
     function polymuse_save_custom_field($post_id)
     {
-        // Debug the POST data
-        error_log('POST data: ' . print_r($_POST, true));
+        error_log('POST data received: ' . print_r($_POST, true));
 
         if (isset($_POST['_3d_model_config_json'])) {
             $model_config_json = $_POST['_3d_model_config_json'];
             error_log('Raw JSON input: ' . $model_config_json);
 
             if (!empty($model_config_json)) {
-                // Attempt to decode to verify it's valid JSON
+                // Trim whitespace and log the exact input
+                $model_config_json = trim($model_config_json);
+                error_log('Trimmed JSON input: ' . $model_config_json);
+
+                // Attempt to decode and check for errors
                 $decoded = json_decode($model_config_json);
                 if ($decoded === null) {
+                    $json_error = json_last_error_msg();
                     error_log('Invalid JSON provided: ' . $model_config_json);
-                    wp_die('Invalid JSON format in 3D Model Config'); // Fail hard as requested
+                    error_log('JSON decode error: ' . $json_error);
+                    wp_die('Invalid JSON format in 3D Model Config: ' . $json_error);
                 }
                 update_post_meta($post_id, '_3d_model_config_json', $model_config_json);
                 error_log('JSON saved: ' . $model_config_json);
