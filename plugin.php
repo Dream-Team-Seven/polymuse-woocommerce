@@ -122,9 +122,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         global $product;
 
         // Debug logging
-        error_log('polymuse_add_model_and_thumbnail_to_gallery called');
-        error_log('Attachment ID: ' . $attachment_id);
-        error_log('HTML received: ' . $html);
+        // error_log('polymuse_add_model_and_thumbnail_to_gallery called');
+        // error_log('Attachment ID: ' . $attachment_id);
+        // error_log('HTML received: ' . $html);
 
         if (!$product) {
             error_log('No product found');
