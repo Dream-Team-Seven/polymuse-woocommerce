@@ -59,7 +59,7 @@ model-viewer::part(default-ar-button) {
   /* Apply custom styles to the default AR button */
   transform: scale(1.2);
   /* Increase the size by 20% */
-  margin-top: 10px;  
+  margin-top: 10px;
 }
 
 model-viewer::part(default-progress-bar) {
@@ -79,5 +79,907 @@ model-viewer::part(default-progress-bar) {
   margin-bottom: 10px;
 }
 
-/* .twae-wrapper.twae-horizontal-wrapper:not(.twae-post-timeline){
-  pointer-events: none !important;} */
+/* ______________________________________ */
+/* Model viewer styles */
+.polymuse-model-viewer {
+  position: relative;
+  width: 100%;
+  height: 500px;
+}
+
+.ar-button {
+  position: fixed;
+  bottom: 64px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: #0000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: none;
+  color: black;
+  border: 1px solid black;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  z-index: 10;
+  &:focus,
+  &:active,
+  &:hover {
+    background-color: transparent;    
+    color: black;    
+    border-color: black;
+    box-shadow: none;
+  }
+}
+
+.ar-button:hover {
+  background-color: #f5f5f5;
+}
+
+.ar-button i {
+  font-size: 20px;
+}
+
+
+.model-controls {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  display: flex;
+  gap: 16px;
+  z-index: 10;
+}
+
+.control-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: #0000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: none;
+  color: black;
+  border: 1px solid black;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  transition: background-color 0.2s;
+  outline: none;
+
+  &:focus,
+  &:active,
+  &:hover {
+    background-color: transparent;    
+    color: black;    
+    border-color: black;
+    box-shadow: none;
+  }
+}
+
+/* Hide QR button on mobile devices */
+@media (max-width: 768px) {
+  .control-button.qr-button {
+    display: none !important;
+  }
+}
+
+.control-button:hover {
+  background-color: #f5f5f5;
+}
+
+.qr-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  width: 400px;
+  max-width: 90vw;
+  z-index: 1000;
+  text-align: center;
+}
+
+.qr-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.dialog-content h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+
+.dialog-content p {
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.qr-code {
+  width: 256px;
+  height: 256px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f5f5;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.close-dialog {
+  margin-top: 16px;
+  padding: 10px 24px;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.close-dialog:hover {
+  background: #e5e5e5;
+}
+
+/* Prevent scrolling when modal is open */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Modal backdrop */
+.qr-dialog::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: #3b82f6;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+}
+
+.dim {
+  background: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  pointer-events: none;
+}
+
+.dimension-line {
+  stroke: #3b82f6;
+  stroke-width: 2;
+  stroke-dasharray: 4;
+}
+
+.dimension-line.hidden {
+  display: none;
+}
+
+.polymuse-branding {
+  position: fixed;
+  bottom: 12px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 200;
+  color: currentColor;
+  text-decoration: none;
+  z-index: 999;
+  color: #6c00e0;
+}
+
+
+
+.dimensionLineContainer {
+  pointer-events: none;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.dimensionLine {
+  stroke: #16a5e6;
+  stroke-width: 2;
+  stroke-dasharray: 2;
+}
+
+.hide {
+  display: none;
+}
+
+.show-hide-options {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.show-hide-button {
+  cursor: pointer;
+  padding: 15px;
+  color: rgb(65, 65, 65);
+  background: rgb(255, 255, 255);
+  text-transform: uppercase;
+  border: 1px solid lightgray;
+}
+
+.show-hide-button:hover {
+  transform: scale(1.1);
+  border: 1px solid rgb(65, 65, 65);
+}
+
+.show-hide-button.selected {
+  border: 1px solid rgb(65, 65, 65);
+  transform: scale(1.1);
+}
+
+/* .ar-button {
+  position: fixed;
+  bottom: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: white;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+} */
+
+/* .ar-button:hover {
+  background-color: #f5f5f5;
+}
+
+.ar-button i {
+  font-size: 20px;
+} */
+/* 
+.product-configurator-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.configurator-layout {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4rem;
+}
+
+.product-header {
+  margin-bottom: 2rem;
+}
+
+.vendor {
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.product-title {
+  font-size: 2.5rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;  
+}
+
+.product-price {
+  margin-top:0rem;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.config-accordion {
+  border-top: 1px solid #e5e5e5;
+}
+
+.config-accordion:last-of-type {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.config-accordion summary {
+  list-style: none;
+  padding: 1rem 0;
+  cursor: pointer;
+}
+
+.summary-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-title {
+  font-weight: 500;
+  flex: 1;
+}
+
+.selected-option {
+  color: #666;
+  margin-right: 1rem;
+  font-size: 1rem;
+}
+
+.accordion-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0rem 0;
+    margin-bottom: 1.5rem;
+}
+
+.option-button {
+  background: none;
+  border: none;
+  padding: 0.1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.option-button:hover {
+  transform: scale(1.1);
+}
+
+.option-button.selected .swatch-circle,
+.option-button.selected .swatch-square {
+  border: 2px solid #000 !important;
+  transform: scale(1.1);
+}
+
+.option-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swatch-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 25%;
+  border: 2px solid #ddd !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+  display: block !important;
+}
+
+.swatch-square {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-size: cover;
+  background-position: center;
+  transition: all 0.2s ease;
+}
+
+.option-button::after {
+
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.option-button:hover::after {
+  opacity: 1;
+}
+
+.cart-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e5e5;
+}
+
+.quantity-selector {
+  margin-bottom: 2.5rem;
+}
+
+.quantity-selector label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  color: #666;
+}
+
+.quantity-input {
+  width: 50px;
+  border: none;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 1rem;
+  -moz-appearance: textfield;
+}
+
+.quantity-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+.quantity-btn {
+  border: none;
+  background: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.cart-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.add-to-cart,
+.buy-now {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #000;
+  border-radius: 0;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-to-cart {
+  background: white;
+  color: black;
+}
+
+.buy-now {
+  background: black;
+  color: white;
+}
+
+.add-to-cart:hover {
+  background: #f5f5f5;
+}
+
+.buy-now:hover {
+  background: #333;
+}
+
+@media (max-width: 1024px) {
+  .configurator-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.media-gallery {
+  position: relative;
+  width: 100%;
+}
+
+.gallery-main {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.gallery-viewer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background: #f5f5f5;
+}
+
+.media-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: none;
+}
+
+.media-item.active {
+  opacity: 1;
+  display: block;
+}
+
+.media-item img,
+.media-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.gallery-thumbnails {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.5rem 0;
+  scrollbar-width: thin;
+}
+
+.thumbnail-item {
+  flex: 0 0 60px;
+  width: 60px;
+  height: 60px;
+  border: 1px solid transparent;
+  padding: 2px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.thumbnail-item:hover,
+.thumbnail-item.active {
+  border-color:rgb(52, 52, 52);
+}
+
+.thumbnail-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+} */
+
+.model-icon {
+  font-size: 24px;
+  margin: 16px;
+}
+
+/* MicroModal Styles */
+.modal {
+  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif;
+}
+
+.modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal__container {
+  background-color: #fff;
+  padding: 30px;
+  max-width: 500px;
+  max-height: 100vh;
+  border-radius: 12px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal__title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.modal__close {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.modal__close::before,
+.modal__close::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 24px;
+  background-color: #999;
+  left: 12px;
+  top: 0;
+}
+
+.modal__close::before {
+  transform: rotate(45deg);
+}
+
+.modal__close::after {
+  transform: rotate(-45deg);
+}
+
+.modal__content {
+  margin-bottom: 2rem;
+  color: #666;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.qr-code-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.modal__footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal__btn {
+  font-size: 1rem;
+  padding: 10px 20px;
+  background-color: #f5f5f5;
+  color: #333;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modal__btn:hover {
+  background-color: #e5e5e5;
+}
+
+/* Micromodal animations */
+.micromodal-slide {
+  display: none;
+}
+
+.micromodal-slide.is-open {
+  display: block;
+}
+
+.micromodal-slide[aria-hidden="false"] .modal__overlay {
+  animation: mmfadeIn .3s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+.micromodal-slide[aria-hidden="false"] .modal__container {
+  animation: mmslideIn .3s cubic-bezier(0, 0, .2, 1);
+}
+
+.micromodal-slide[aria-hidden="true"] .modal__overlay {
+  animation: mmfadeOut .3s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+.micromodal-slide[aria-hidden="true"] .modal__container {
+  animation: mmslideOut .3s cubic-bezier(0, 0, .2, 1);
+}
+
+.micromodal-slide .modal__container,
+.micromodal-slide .modal__overlay {
+  will-change: transform;
+}
+
+@keyframes mmfadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mmfadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes mmslideIn {
+  from {
+    transform: translateY(15%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes mmslideOut {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-10%);
+  }
+}
+
+/* ... rest of existing styles ... */
+
+/* QR Popup Styles */
+.qr-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qr-popup-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.qr-popup-content {
+  position: relative;
+  width: 90%;
+  max-width: 450px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.qr-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.qr-popup-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.qr-popup-close {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.qr-popup-close:hover {
+  color: #333;
+}
+
+.qr-popup-body {
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-popup-body p {
+  margin: 0 0 20px;
+  font-size: 16px;
+  color: #333;
+  line-height: 1.5;
+  max-width: 90%;
+}
+
+.qr-code-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+  width: 280px;
+  height: 280px;
+}
+
+.qr-code-container img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.qr-logo-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ar-logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ff5252;
+  line-height: 1;
+  text-align: center;
+}
+
+.ar-logo span {
+  display: block;
+  font-size: 10px;
+  font-weight: normal;
+  color: #666;
+}
+
+.qr-requirements {
+  font-size: 12px;
+  color: #666;
+  margin-top: 10px;
+}
+
+/* Prevent body scrolling when popup is open */
+body.qr-popup-open {
+  overflow: hidden;
+}

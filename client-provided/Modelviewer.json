@@ -1,0 +1,20 @@
+{
+  "model_url": "https://firebasestorage.googleapis.com/v0/b/polymuse-68692.appspot.com/o/SheenChair.glb?alt=media&token=8185cacb-4460-485d-9e87-88e3a64086c2",
+  "ios_model_url": "",
+  "camera_orbit": "0deg 75deg 2m",
+  "min_camera_orbit": "auto 45deg auto",
+  "max_camera_orbit": "auto 75deg auto",
+  "disable_zoom": false,
+  "disable_pan": false,
+  "ar": true,
+  "auto_rotate": false,
+  "rotate_direction": "right",
+  "is_transparent": true,
+  "background_color": "#F5F5F5",
+  "dimension_unit": "metric",
+  "polymuse_branding": true,
+  "show_qr_code_button": true,
+  "show_dimensions_button": true,
+  "embed_url": "https://example.com/ar-view?product=123",
+  "website_id": "your-analytics-id"
+}
