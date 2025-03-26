@@ -12,7 +12,7 @@ jQuery(document).ready(function ($) {
 
     addVariantButtonOnClick();
 
-    addQrPopupButton();
+    addQrPopupButtonAction();
 
     function adjustModelViewerHeight() {
         $('.polymuse-model-viewer').height(500);
