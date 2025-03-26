@@ -8,7 +8,7 @@ jQuery(document).ready(function ($) {
 
     setupModelViewerVariants();
 
-    addVariantButtonOnClick();  
+    addVariantButtonOnClick();
 
     addQrPopupButton();
 
@@ -126,12 +126,12 @@ jQuery(document).ready(function ($) {
         // Create QR dialog on page load
         function createQRDialog() {
             let qrPopup = document.querySelector('.qr-popup');
-            
+
             if (!qrPopup) {
                 qrPopup = document.createElement('div');
                 qrPopup.className = 'qr-popup';
                 qrPopup.style.display = 'none';
-                
+
                 qrPopup.innerHTML = `
                     <div class="qr-popup-overlay"></div>
                     <div class="qr-popup-content">
@@ -148,7 +148,7 @@ jQuery(document).ready(function ($) {
                         </div>
                     </div>
                 `;
-                
+
                 document.body.appendChild(qrPopup);
             }
             return qrPopup;
@@ -157,14 +157,38 @@ jQuery(document).ready(function ($) {
         const qrPopup = createQRDialog();
 
         // Handle click events
-        $('#qr-button').on('click', function() {
+        $('#qr-button').on('click', function () {
             qrPopup.style.display = 'block';
         });
 
-        $(qrPopup).on('click', '.qr-popup-close, .qr-popup-overlay', function() {
+        $(qrPopup).on('click', '.qr-popup-close, .qr-popup-overlay', function () {
             qrPopup.style.display = 'none';
         });
     }
+
+    function generateQRCode() {
+        // if (!this.config.embed_url) {
+        //     console.error('No embed URL provided for QR code');
+        //     return;
+        // }
+
+        // Check if QRCode library is loaded
+
+       
+        c
+        const qrContainer = document.querySelector('.qr-code-container');
+        if (qrContainer) {
+            const qr = new QRCode(qrContainer, {
+                text: "www.google.com",
+                width: 280,
+                height: 280,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+    }
+
 });
 
 
