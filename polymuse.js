@@ -167,19 +167,17 @@ jQuery(document).ready(function ($) {
     }
 
     function generateQRCode() {
-        // if (!this.config.embed_url) {
-        //     console.error('No embed URL provided for QR code');
-        //     return;
-        // }
-
-        // Check if QRCode library is loaded
-
-       
-        c
         const qrContainer = document.querySelector('.qr-code-container');
         if (qrContainer) {
+            // Clear any existing QR code
+            qrContainer.innerHTML = '';
+            
+            // Get the current URL
+            const currentUrl = window.location.href;
+            
+            // Create new QR code
             const qr = new QRCode(qrContainer, {
-                text: "www.google.com",
+                text: currentUrl,
                 width: 280,
                 height: 280,
                 colorDark: "#000000",
@@ -188,6 +186,11 @@ jQuery(document).ready(function ($) {
             });
         }
     }
+    
+    // Generate QR code when button is clicked
+    $('#qr-button').on('click', function() {
+        generateQRCode();
+    });
 
 });
 
