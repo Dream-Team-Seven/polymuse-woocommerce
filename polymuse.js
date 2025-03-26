@@ -181,6 +181,7 @@ jQuery(document).ready(function ($) {
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H // High error correction
             });
+            console.log("gen qr code called")
         }
     }
 });
