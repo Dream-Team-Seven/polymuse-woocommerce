@@ -10,6 +10,8 @@ jQuery(document).ready(function ($) {
 
     addVariantButtonOnClick();  
 
+    addQrPopupButton();
+
     // If model viewer is found, create variant buttons
     function setupModelViewerVariants() {
         // Get the model viewer element
@@ -63,7 +65,6 @@ jQuery(document).ready(function ($) {
             });
 
         } else {
-
             console.log('Model Viewer element not found.');
         }
     }
@@ -119,6 +120,15 @@ jQuery(document).ready(function ($) {
         } else {
             variantButtonsContainer.textContent = 'No variants available';
         }
+    }
+
+    function addQrPopupButton(){
+        const modelControlsDiv =$('#model-controls')
+        const button = $('<button>', {
+            text: 'Look at me',
+            class: 'control-button'
+        });
+        modelControlsDiv.append(button);
     }
 
 });
