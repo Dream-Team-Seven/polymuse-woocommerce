@@ -1,9 +1,11 @@
 jQuery(document).ready(function ($) {
-    function adjustModelViewerHeight() {
-        $('.polymuse-model-viewer').height(500);
-    }
+
+    $('<script>')
+        .attr('src', 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js')
+        .appendTo('head');
 
     adjustModelViewerHeight();
+
     $(window).resize(adjustModelViewerHeight);
 
     setupModelViewerVariants();
@@ -11,6 +13,10 @@ jQuery(document).ready(function ($) {
     addVariantButtonOnClick();
 
     addQrPopupButton();
+
+    function adjustModelViewerHeight() {
+        $('.polymuse-model-viewer').height(500);
+    }
 
     // If model viewer is found, create variant buttons
     function setupModelViewerVariants() {
@@ -181,7 +187,7 @@ jQuery(document).ready(function ($) {
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H // High error correction
             });
-           
+
         }
         console.log("gen qr code called")
     }
