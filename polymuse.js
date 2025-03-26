@@ -123,10 +123,8 @@ jQuery(document).ready(function ($) {
     }
 
     function addQrPopupButton() {
-        // Create QR dialog on page load
         function createQRDialog() {
             let qrPopup = document.querySelector('.qr-popup');
-
             if (!qrPopup) {
                 qrPopup = document.createElement('div');
                 qrPopup.className = 'qr-popup';
@@ -137,18 +135,17 @@ jQuery(document).ready(function ($) {
                     <div class="qr-popup-content">
                         <div class="qr-popup-header">
                             <h3>Scan QR Code</h3>
-                            <button class="qr-popup-close">&times;</button>
+                            <button class="qr-popup-close">×</button>
                         </div>
                         <div class="qr-popup-body">
-                            <p>Point your camera to scan the QR code to view this product in AR - see how it looks in your space!</p>
+                            <p>Point your camera to scan the QR code to view this product in AR</p>
                             <div id="qr-code-container" class="qr-code-container"></div>
                             <div class="qr-requirements">
-                                Minimum requirement: iOS 13, iPadOS 13 or Android with ARCore 1.9 or higher
+                                Minimum requirement: iOS 13, iPadOS 13 or Android with ARCore 1.9+
                             </div>
                         </div>
                     </div>
                 `;
-
                 document.body.appendChild(qrPopup);
             }
             return qrPopup;
@@ -156,10 +153,9 @@ jQuery(document).ready(function ($) {
 
         const qrPopup = createQRDialog();
 
-        // Handle click events
         $('#qr-button').on('click', function () {
             qrPopup.style.display = 'block';
-            generateQRCode(); // Generate QR code when popup is opened
+            generateQRCode();
         });
 
         $(qrPopup).on('click', '.qr-popup-close, .qr-popup-overlay', function () {
@@ -172,22 +168,21 @@ jQuery(document).ready(function ($) {
         if (qrContainer) {
             // Clear any existing QR code
             qrContainer.empty();
-    
-            // Get the current URL
-            const currentUrl = window.location.href;
-    
-            // Create new QR code
-            $.qrCode({
-                text: currentUrl,
-                size: 280,
+
+            // Use placeholder URL as requested
+            const placeholderUrl = "https://example.com";
+
+            // Create new QR code using QRCode.js
+            new QRCode(qrContainer[0], {
+                text: placeholderUrl,
+                width: 280,
+                height: 280,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
-                correctLevel: 3
-            })
-            .appendTo(qrContainer);
+                correctLevel: QRCode.CorrectLevel.H // High error correction
+            });
         }
     }
-
 });
 
 
