@@ -1,16 +1,23 @@
 jQuery(document).ready(function ($) {
-    function adjustModelViewerHeight() {
-        $('.polymuse-model-viewer').height(500);
-    }
+
+    $('<script>')
+        .attr('src', 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js')
+        .appendTo('head');
 
     adjustModelViewerHeight();
+
     $(window).resize(adjustModelViewerHeight);
 
     setupModelViewerVariants();
 
-    addVariantButtonOnClick();  
+    addVariantButtonOnClick();
 
-    // If model viewer is found, create variant buttons
+    addQrPopupButton();
+
+    function adjustModelViewerHeight() {
+        $('.polymuse-model-viewer').height(500);
+    }
+
     function setupModelViewerVariants() {
         // Get the model viewer element
         const modelViewer = $('model-viewer')[0];
@@ -63,7 +70,6 @@ jQuery(document).ready(function ($) {
             });
 
         } else {
-
             console.log('Model Viewer element not found.');
         }
     }
@@ -121,6 +127,70 @@ jQuery(document).ready(function ($) {
         }
     }
 
+    function addQrPopupButton() {
+        function createQRDialog() {
+            let qrPopup = document.querySelector('.qr-popup');
+            if (!qrPopup) {
+                qrPopup = document.createElement('div');
+                qrPopup.className = 'qr-popup';
+                qrPopup.style.display = 'none';
+
+                qrPopup.innerHTML = `
+                    <div class="qr-popup-overlay"></div>
+                    <div class="qr-popup-content">
+                        <div class="qr-popup-header">
+                            <h3>Scan QR Code</h3>
+                            <button class="qr-popup-close">×</button>
+                        </div>
+                        <div class="qr-popup-body">
+                            <p>Point your camera to scan the QR code to view this product in AR</p>
+                            <div id="qr-code-container" class="qr-code-container"></div>
+                            <div class="qr-requirements">
+                                Minimum requirement: iOS 13, iPadOS 13 or Android with ARCore 1.9+
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(qrPopup);
+            }
+            return qrPopup;
+        }
+
+        const qrPopup = createQRDialog();
+
+        $('#qr-button').on('click', function () {
+            qrPopup.style.display = 'block';
+            generateQRCode();
+        });
+
+        $(qrPopup).on('click', '.qr-popup-close, .qr-popup-overlay', function () {
+            qrPopup.style.display = 'none';
+        });
+    }
+
+    function generateQRCode() {
+        const qrContainer = $('#qr-code-container');
+        const qrButton = $('#qr-button');
+
+        if (qrContainer && qrButton) {
+            // Clear any existing QR code
+            qrContainer.empty();
+
+            // Get the embed URL from the qr-button element
+            const embedUrl = qrButton.data('embed-url');
+
+            // Create new QR code using QRCode.js
+            new QRCode(qrContainer[0], {
+                text: embedUrl,
+                width: 280,
+                height: 280,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H // High error correction
+            });
+        }
+        console.log("gen qr code called")
+    }
 });
 
 
