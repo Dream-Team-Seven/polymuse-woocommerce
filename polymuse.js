@@ -18,7 +18,6 @@ jQuery(document).ready(function ($) {
         $('.polymuse-model-viewer').height(500);
     }
 
-    // If model viewer is found, create variant buttons
     function setupModelViewerVariants() {
         // Get the model viewer element
         const modelViewer = $('model-viewer')[0];
@@ -171,23 +170,24 @@ jQuery(document).ready(function ($) {
 
     function generateQRCode() {
         const qrContainer = $('#qr-code-container');
-        if (qrContainer) {
+        const qrButton = $('#qr-button');
+
+        if (qrContainer && qrButton) {
             // Clear any existing QR code
             qrContainer.empty();
 
-            // Use placeholder URL as requested
-            const placeholderUrl = "https://example.com";
+            // Get the embed URL from the qr-button element
+            const embedUrl = qrButton.data('embed-url');
 
             // Create new QR code using QRCode.js
             new QRCode(qrContainer[0], {
-                text: placeholderUrl,
+                text: embedUrl,
                 width: 280,
                 height: 280,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H // High error correction
             });
-
         }
         console.log("gen qr code called")
     }
