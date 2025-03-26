@@ -141,7 +141,7 @@ jQuery(document).ready(function ($) {
                         </div>
                         <div class="qr-popup-body">
                             <p>Point your camera to scan the QR code to view this product in AR - see how it looks in your space!</p>
-                            <div class="qr-code-container"></div>
+                            <div id='qr-code-container" class="qr-code-container"></div>
                             <div class="qr-requirements">
                                 Minimum requirement: iOS 13, iPadOS 13 or Android with ARCore 1.9 or higher
                             </div>
@@ -158,7 +158,6 @@ jQuery(document).ready(function ($) {
 
         // Handle click events
         $('#qr-button').on('click', function () {
-            generateQRCode();
             qrPopup.style.display = 'block';
         });
 
@@ -186,8 +185,9 @@ jQuery(document).ready(function ($) {
                 correctLevel: QRCode.CorrectLevel.H
             });
         }
-    }  
-
+    }
+    
+   
 });
 
 
