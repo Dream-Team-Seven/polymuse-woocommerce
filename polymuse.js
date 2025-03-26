@@ -123,12 +123,15 @@ jQuery(document).ready(function ($) {
     }
 
     function addQrPopupButton(){
-        const modelControlsDiv =$('#model-controls')
-        const button = $('<button>', {
-            text: 'Look at me',
-            class: 'control-button'
+        const modelControlsDiv = $('#model-controls');
+        $('#qr-button').on('click', function() {
+            console.log('QR button clicked');
         });
-        modelControlsDiv.append(button);
+        // const button = $('<button>', {
+        //     text: 'Look at me',
+        //     class: 'control-button'
+        // });
+        // modelControlsDiv.append(button);
     }
 
 });
