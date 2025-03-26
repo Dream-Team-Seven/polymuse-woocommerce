@@ -158,6 +158,7 @@ jQuery(document).ready(function ($) {
 
         // Handle click events
         $('#qr-button').on('click', function () {
+            generateQRCode();
             qrPopup.style.display = 'block';
         });
 
@@ -167,7 +168,7 @@ jQuery(document).ready(function ($) {
     }
 
     function generateQRCode() {
-        const qrContainer = document.querySelector('.qr-code-container');
+        const qrContainer = $('#qr-code-container');
         if (qrContainer) {
             // Clear any existing QR code
             qrContainer.innerHTML = '';
@@ -185,12 +186,7 @@ jQuery(document).ready(function ($) {
                 correctLevel: QRCode.CorrectLevel.H
             });
         }
-    }
-    
-    // Generate QR code when button is clicked
-    $('#qr-button').on('click', function() {
-        generateQRCode();
-    });
+    }  
 
 });
 
