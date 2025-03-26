@@ -122,18 +122,49 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    function addQrPopupButton(){
-        const modelControlsDiv = $('#model-controls');
-        $('#qr-button').on('click', function() {
-            console.log('QR button clicked');
-        });
-        // const button = $('<button>', {
-        //     text: 'Look at me',
-        //     class: 'control-button'
-        // });
-        // modelControlsDiv.append(button);
-    }
+    function addQrPopupButton() {
+        // Create QR dialog on page load
+        function createQRDialog() {
+            let qrPopup = document.querySelector('.qr-popup');
+            
+            if (!qrPopup) {
+                qrPopup = document.createElement('div');
+                qrPopup.className = 'qr-popup';
+                qrPopup.style.display = 'none';
+                
+                qrPopup.innerHTML = `
+                    <div class="qr-popup-overlay"></div>
+                    <div class="qr-popup-content">
+                        <div class="qr-popup-header">
+                            <h3>Scan QR Code</h3>
+                            <button class="qr-popup-close">&times;</button>
+                        </div>
+                        <div class="qr-popup-body">
+                            <p>Point your camera to scan the QR code to view this product in AR - see how it looks in your space!</p>
+                            <div class="qr-code-container"></div>
+                            <div class="qr-requirements">
+                                Minimum requirement: iOS 13, iPadOS 13 or Android with ARCore 1.9 or higher
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(qrPopup);
+            }
+            return qrPopup;
+        }
 
+        const qrPopup = createQRDialog();
+
+        // Handle click events
+        $('#qr-button').on('click', function() {
+            qrPopup.style.display = 'block';
+        });
+
+        $(qrPopup).on('click', '.qr-popup-close, .qr-popup-overlay', function() {
+            qrPopup.style.display = 'none';
+        });
+    }
 });
 
 
