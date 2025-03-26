@@ -171,23 +171,22 @@ jQuery(document).ready(function ($) {
         const qrContainer = $('#qr-code-container');
         if (qrContainer) {
             // Clear any existing QR code
-            qrContainer.innerHTML = '';
-
+            qrContainer.empty();
+    
             // Get the current URL
             const currentUrl = window.location.href;
-
+    
             // Create new QR code
-            const qr = new QRCode(qrContainer, {
+            $.qrCode({
                 text: currentUrl,
-                width: 280,
-                height: 280,
+                size: 280,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
+                correctLevel: 3
+            })
+            .appendTo(qrContainer);
         }
     }
-
 
 });
 
