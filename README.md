@@ -1,10 +1,9 @@
 # Polymuse WooCommerce
 ## Authors
 - Corazon Palencia
-- Gary Simwawa
 - Patrick MacDonald
 - Xiangyu Hou
-- Tim Karachentsev
+
 ## Description 
 Our 3D Model Viewer Plugin is a game-changer for e-commerce sites. It allows customers to interact with product models in a highly immersive and engaging way. With our plugin, customers can explore 3D models on product pages, giving them a better understanding of the product's features and design.
 

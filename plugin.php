@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: polymuse-woocommerce
-Plugin URI: https://yourwebsite.com/
+Plugin URI: 
 Description: Allows users to add 3D models to WooCommerce products
 Version: 1.0
-Author: Corazon Palencia, Gary Simwawa, Patrick MacDonald, Xiangyu Hou, Tim Karachentsev
+Author: Corazon Palencia, Patrick MacDonald, Xiangyu Hou
 Author URI: https://polymuse.tech/
 */
 
@@ -44,33 +44,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     }
     add_action('plugins_loaded', 'my_polymuse_theme_warning_plugin_init');
 
-    // // Add custom field to product editor
-    // function polymuse_custom_field()
-    // {
-    //     woocommerce_wp_text_input(
-    //         array(
-    //             'id' => '_3d_model_url',
-    //             'label' => '3D Model URL',
-    //             'description' => 'Enter the URL of the 3D model file (e.g., .glb or .gltf)',
-    //             'desc_tip' => true,
-    //         )
-    //     );
-    // }
-    // add_action('woocommerce_product_options_general_product_data', 'polymuse_custom_field');
-
-    // // Save custom field data
-    // function polymuse_save_custom_field($post_id)
-    // {
-    //     $model_url = $_POST['_3d_model_url'];
-    //     if (!empty($model_url)) {
-    //         update_post_meta($post_id, '_3d_model_url', esc_url($model_url));
-    //     }
-    // }
-    // add_action('woocommerce_process_product_meta', 'polymuse_save_custom_field');
-
     // Add custom field to product editor
-    // Save custom field data
-    function polymuse_save_custom_field($post_id)
+      function polymuse_save_custom_field($post_id)
     {
         if (isset($_POST['_3d_model_config_json'])) {
             $model_config_json = stripslashes($_POST['_3d_model_config_json']);
