@@ -123,7 +123,7 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    function addQrPopupButton() {
+    function addQrPopupButtonAction() {
         function createQRDialog() {
             let qrPopup = document.querySelector('.qr-popup');
             if (!qrPopup) {
