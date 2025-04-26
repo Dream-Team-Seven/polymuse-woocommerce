@@ -5,68 +5,70 @@ jQuery(document).ready(function ($) {
         .appendTo('head');
 
     adjustModelViewerHeight();
-    $(window).resize(adjustModelViewerHeight);
-    setupModelViewerVariants();
-    addVariantButtonOnClick();
-    addQrPopupButtonAction();
-    setupDimensionsButton(); // Initialize the dimensions button
 
-    let showDimensions = false;
-    let dimensionUnit = 'metric';
-    const $modelViewer = $('#product-model'); 
+    $(window).resize(adjustModelViewerHeight);
+
+    setupModelViewerVariants();
+
+    addVariantButtonOnClick();
+
+    addQrPopupButtonAction();
+
+    setupDimensionsButton();
 
     function adjustModelViewerHeight() {
         $('.polymuse-model-viewer').height(500);
     }
 
     function setupModelViewerVariants() {
-        if ($modelViewer[0]) {
-            console.log('Model viewer found:', $modelViewer[0]);
+        // Get the model viewer element
+        const modelViewer = $('model-viewer')[0];
+        if (modelViewer) {
+            console.log('Model viewer found:', modelViewer);
 
-            $modelViewer.on('load', () => {
+            $(modelViewer).on('load', () => {
                 console.log('Model viewer loaded (event fired)');
-                const model = $modelViewer[0].model;
+                const model = modelViewer.model;
                 console.log('Model:', model);
 
-                const materials = $modelViewer[0].model.materials;
+                const materials = modelViewer.model.materials;
                 console.log(materials);
 
-                const variants = $modelViewer[0].availableVariants;
+                // Check for available variants
+                const variants = modelViewer.availableVariants;
                 console.log('Available variants:', variants);
 
+                // Get material info for each variant
                 const variantInfo = {};
                 if (variants) {
                     changeVariantInputToLabel();
                     variants.forEach(variant => {
-                        $modelViewer[0].variantName = variant;
-                        const material = $modelViewer[0].model.materials[0]; // Assuming first material
+                        modelViewer.variantName = variant;
+                        const material = modelViewer.model.materials[0]; // Assuming first material
                         if (material && material.pbrMetallicRoughness && material.pbrMetallicRoughness.baseColorFactor) {
                             variantInfo[variant] = material.pbrMetallicRoughness.baseColorFactor;
                         }
                     });
-                    $modelViewer[0].variantName = variants[0];
+                    // Reset to first variant
+                    modelViewer.variantName = variants[0];
                 }
 
-                const $variantButtonsContainer = $('#variant-options-container');
-                if ($variantButtonsContainer.length) {
+                // Create buttons for each variant
+                const variantButtonsContainer = $('#variant-options-container')[0];
+                if (variantButtonsContainer) {
                     if (variants && variants.length > 0) {
-                        $.each(variants, function (index, variant) {
-                            $('<button id="variantButton-' + variant.replace(/\s+/g, '-') + '" class="variant-selector-button alt wp-element-button"></button>') // Use ID for buttons
-                                .text(variant)
-                                .on('click', function () {
-                                    $modelViewer[0].variantName = variant;
-                                })
-                                .appendTo($variantButtonsContainer);
+                        variants.forEach(variant => {
+                            const button = $('<button class="variant-selector-button alt wp-element-button"></button>')[0];
+                            button.textContent = variant;
+                            button.addEventListener('click', () => {
+                                modelViewer.variantName = variant;
+                            });
+                            variantButtonsContainer.appendChild(button);
                         });
                     } else {
-                        $variantButtonsContainer.text('No variants available');
+                        variantButtonsContainer.textContent = 'No variants available';
                     }
                 }
-            });
-
-            const $select = $('#variant');
-            $select.on('input', function (event) {
-                $modelViewer[0].variantName = event.target.value === 'default' ? null : event.target.value;
             });
 
         } else {
@@ -74,45 +76,54 @@ jQuery(document).ready(function ($) {
         }
     }
 
+    // Change variant input to label
     function changeVariantInputToLabel() {
-        const $variantSelect = $('#variant');
-        $variantSelect.hide();
+        const variantSelect = $('#variant');
+        variantSelect.hide();
+
+        // Hide the theme select span
         $('.theme-select').css('display', 'none');
 
+        // Create observer to hide it whenever it appears
         const observer = new MutationObserver(function (mutations) {
             $('.reset_variations').css('display', 'none');
         });
+
+        // Start observing the document for changes
         observer.observe(document.body, {
             childList: true,
             subtree: true
         });
 
-        const $variantLabel = $('<label id="variantLabel">Choose an option</label>'); // Use ID for label
-        $variantSelect.after($variantLabel);
+        const variantLabel = $('<label id="variantLabel">Choose an option</label>')[0];
+
+        variantSelect.after(variantLabel);
     }
 
+    // Update variant label and hidden select
     function updateVariantLabel(variant) {
-        const $variantLabel = $('#variantLabel');
-        const $variantSelect = $('#variant');
-        $variantLabel.text(variant);
-        $variantSelect.val(variant).trigger('change');
+        const variantLabel = $('#variantLabel')[0];
+        const variantSelect = $('#variant');
+        variantLabel.textContent = variant;
+        variantSelect.val(variant).trigger('change');
     }
 
+    // Add on click event to variant buttons
     function addVariantButtonOnClick() {
-        const $variantButtonsContainer = $('#variant-options-container');
-        console.log('$variantButtonsContainer:', $variantButtonsContainer);
-        if ($variantButtonsContainer.length) {
-            $variantButtonsContainer.on('click', 'button', function () {
+        const variantButtonsContainer = $('#variant-options-container')[0];
+        console.log('variantButtonsContainer:', variantButtonsContainer);
+        if (variantButtonsContainer) {
+            $(variantButtonsContainer).on('click', 'button', function () {
                 const variant = $(this).text();
                 console.log('Variant clicked:', variant);
                 updateVariantLabel(variant);
             });
         } else {
-            $variantButtonsContainer.text('No variants available');
+            variantButtonsContainer.textContent = 'No variants available';
         }
     }
 
-    function addQrPopupButtonAction() {
+    function addQrPopupButton() {
         function createQRDialog() {
             let qrPopup = document.querySelector('.qr-popup');
             if (!qrPopup) {
@@ -154,24 +165,51 @@ jQuery(document).ready(function ($) {
     }
 
     function generateQRCode() {
-        const $qrContainer = $('#qr-code-container');
-        const $qrButton = $('#qr-button');
+        const qrContainer = $('#qr-code-container');
+        const qrButton = $('#qr-button');
 
-        if ($qrContainer.length && $qrButton.length) {
-            $qrContainer.empty();
-            const embedUrl = $qrButton.data('embed-url');
-            new QRCode($qrContainer[0], {
+        if (qrContainer && qrButton) {
+            // Clear any existing QR code
+            qrContainer.empty();
+
+            // Get the embed URL from the qr-button element
+            const embedUrl = qrButton.data('embed-url');
+
+            // Create new QR code using QRCode.js
+            new QRCode(qrContainer[0], {
                 text: embedUrl,
                 width: 280,
                 height: 280,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
+                correctLevel: QRCode.CorrectLevel.H // High error correction
             });
         }
         console.log("gen qr code called")
     }
 
+    // Converted jQuery code for model viewer dimensions and variants
+    const $modelViewerVariants = $('model-viewer#chair');
+    const $select = $('#variant');
+
+    $modelViewerVariants.on('load', function () {
+        const names = $modelViewerVariants[0].availableVariants;
+        $.each(names, function (index, name) {
+            $('<option>', {
+                value: name,
+                text: name
+            }).appendTo($select);
+        });
+        // Adds a default option
+        $('<option>', {
+            value: 'default',
+            text: 'Default'
+        }).appendTo($select);
+    });
+
+    $select.on('input', function (event) {
+        $modelViewerVariants[0].variantName = event.target.value === 'default' ? null : event.target.value;
+    });
     function setupDimensionsButton() {
         const $dimensionsButton = $('.dimensions-button'); // Keep class selector for the button
         console.log('$dimensionsButton element:', $dimensionsButton); // Log the button element
@@ -195,7 +233,7 @@ jQuery(document).ready(function ($) {
 
     function setupDimensions() {
         console.log('setupDimensions function called.');
-        if (!$modelViewer[0].modelIsVisible) {
+        if (!$modelViewerVariants[0].modelIsVisible) {
             console.log('Model is not visible, returning.');
             return;
         }
@@ -205,14 +243,14 @@ jQuery(document).ready(function ($) {
         const cornerPositions = ['dotOrigin', 'dotX', 'dotY', 'dotZ'];
         $.each(cornerPositions, function (index, position) {
             const $dot = $('<button id="hotspot-' + position + '" class="dot" slot="hotspot-' + position + '" data-position="0 0 0" data-normal="1 0 0"></button>') // Use IDs for dots
-                .appendTo($modelViewer);
+                .appendTo($modelViewerVariants);
             console.log('Created dot:', $dot); // Log each created dot
         });
 
         const dimLabels = ['dimX', 'dimY', 'dimZ'];
         $.each(dimLabels, function (index, dim) {
             const $label = $('<button id="hotspot-' + dim + '" class="dim" slot="hotspot-' + dim + '" data-position="0 0 0" data-normal="1 0 0"></button>') // Use IDs for dimension labels
-                .appendTo($modelViewer);
+                .appendTo($modelViewerVariants);
             console.log('Created label:', $label); // Log each created label
         });
 
@@ -227,11 +265,11 @@ jQuery(document).ready(function ($) {
             line.setAttribute('class', 'dimensionLine');
             svg.appendChild(line);
         }
-        $modelViewer[0].appendChild(svg);
+        $modelViewerVariants[0].appendChild(svg);
         console.log('Created SVG lines container:', svg); // Log SVG creation
 
-        $modelViewer.on('load', updateDimensions);
-        $modelViewer.on('camera-change', renderSVG);
+        $modelViewerVariants.on('load', updateDimensions);
+        $modelViewerVariants.on('camera-change', renderSVG);
         console.log('Added event listeners for load and camera-change.');
 
         setTimeout(updateDimensions, 100);
@@ -252,18 +290,18 @@ jQuery(document).ready(function ($) {
         console.log('SVG to remove:', $svg); // Log the SVG being selected for removal
         $svg.remove();
 
-        $modelViewer.off('camera-change', renderSVG);
-        $modelViewer.off('load', updateDimensions);
+        $modelViewerVariants.off('camera-change', renderSVG);
+        $modelViewerVariants.off('load', updateDimensions);
         console.log('Removed event listeners.');
     }
 
     function updateDimensions() {
-        if (!$modelViewer[0].modelIsVisible || !showDimensions) return;
-        console.log('updateDimensions called. modelIsVisible:', $modelViewer[0].modelIsVisible, 'showDimensions:', showDimensions);
+        if (!$modelViewerVariants[0].modelIsVisible || !showDimensions) return;
+        console.log('updateDimensions called. modelIsVisible:', $modelViewerVariants[0].modelIsVisible, 'showDimensions:', showDimensions);
 
         try {
-            const center = $modelViewer[0].getBoundingBoxCenter();
-            const size = $modelViewer[0].getDimensions();
+            const center = $modelViewerVariants[0].getBoundingBoxCenter();
+            const size = $modelViewerVariants[0].getDimensions();
             const x2 = size.x / 2;
             const y2 = size.y / 2;
             const z2 = size.z / 2;
@@ -274,14 +312,14 @@ jQuery(document).ready(function ($) {
                 z: center.z - z2
             };
 
-            $modelViewer[0].updateHotspot({ name: 'hotspot-dotOrigin', position: `${origin.x} ${origin.y} ${origin.z}` });
-            $modelViewer[0].updateHotspot({ name: 'hotspot-dotX', position: `${origin.x + size.x} ${origin.y} ${origin.z}` });
-            $modelViewer[0].updateHotspot({ name: 'hotspot-dotY', position: `${origin.x} ${origin.y + size.y} ${origin.z}` });
-            $modelViewer[0].updateHotspot({ name: 'hotspot-dotZ', position: `${origin.x} ${origin.y} ${origin.z + size.z}` });
+            $modelViewerVariants[0].updateHotspot({ name: 'hotspot-dotOrigin', position: `${origin.x} ${origin.y} ${origin.z}` });
+            $modelViewerVariants[0].updateHotspot({ name: 'hotspot-dotX', position: `${origin.x + size.x} ${origin.y} ${origin.z}` });
+            $modelViewerVariants[0].updateHotspot({ name: 'hotspot-dotY', position: `${origin.x} ${origin.y + size.y} ${origin.z}` });
+            $modelViewerVariants[0].updateHotspot({ name: 'hotspot-dotZ', position: `${origin.x} ${origin.y} ${origin.z + size.z}` });
 
-            $modelViewer[0].updateHotspot({ name: 'hotspot-dimX', position: `${origin.x + size.x / 2} ${origin.y - 0.1} ${origin.z - 0.1}` });
-            $modelViewer[0].updateHotspot({ name: 'hotspot-dimY', position: `${origin.x - 0.1} ${origin.y + size.y / 2} ${origin.z - 0.1}` });
-            $modelViewer[0].updateHotspot({ name: 'hotspot-dimZ', position: `${origin.x - 0.1} ${origin.y - 0.1} ${origin.z + size.z / 2}` });
+            $modelViewerVariants[0].updateHotspot({ name: 'hotspot-dimX', position: `${origin.x + size.x / 2} ${origin.y - 0.1} ${origin.z - 0.1}` });
+            $modelViewerVariants[0].updateHotspot({ name: 'hotspot-dimY', position: `${origin.x - 0.1} ${origin.y + size.y / 2} ${origin.z - 0.1}` });
+            $modelViewerVariants[0].updateHotspot({ name: 'hotspot-dimZ', position: `${origin.x - 0.1} ${origin.y - 0.1} ${origin.z + size.z / 2}` });
 
             const multiplier = dimensionUnit === 'metric' ? 100 : 39.37;
             const unit = dimensionUnit === 'metric' ? 'cm' : 'in';
@@ -321,8 +359,8 @@ jQuery(document).ready(function ($) {
     }
 
     function drawLine(svgLine, dot1, dot2, dimensionHotspot) {
-        const hotspot1 = $modelViewer[0].queryHotspot(`hotspot-${dot1}`);
-        const hotspot2 = $modelViewer[0].queryHotspot(`hotspot-${dot2}`);
+        const hotspot1 = $modelViewerVariants[0].queryHotspot(`hotspot-${dot1}`);
+        const hotspot2 = $modelViewerVariants[0].queryHotspot(`hotspot-${dot2}`);
 
         if (hotspot1 && hotspot2 && hotspot1.canvasPosition && hotspot2.canvasPosition) {
             svgLine.setAttribute('x1', hotspot1.canvasPosition.x);
@@ -339,7 +377,7 @@ jQuery(document).ready(function ($) {
             }
 
             if (dimensionHotspot) {
-                const dimHotspot = $modelViewer[0].queryHotspot(`hotspot-${dimensionHotspot}`);
+                const dimHotspot = $modelViewerVariants[0].queryHotspot(`hotspot-${dimensionHotspot}`);
                 if (dimHotspot && !dimHotspot.facingCamera) {
                     $(svgLine).addClass('hide');
                 } else {
@@ -350,4 +388,6 @@ jQuery(document).ready(function ($) {
             console.log('Could not find hotspot or canvas position for drawing line:', dot1, dot2);
         }
     }
+
+
 });
