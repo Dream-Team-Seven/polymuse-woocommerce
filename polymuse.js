@@ -183,7 +183,8 @@ jQuery(document).ready(function ($) {
         console.log('Setting up dimensions button');
         const modelViewer = $('model-viewer#product-model')[0];
         let showDimensions = false;
-        let dimensionUnit = 'metric';
+        // Retrieve dimension unit from model-viewer data attribute
+        const dimensionUnit = $(modelViewer).data('dimension-unit') || '';
 
         $('#dimensions-button').on('click', function () {
             console.log('Dimensions button clicked');
@@ -353,9 +354,9 @@ jQuery(document).ready(function ($) {
                 svgLine.setAttribute('x2', hotspot2.canvasPosition.x);
                 svgLine.setAttribute('y2', hotspot2.canvasPosition.y);
 
-                svgLine.setAttribute('stroke', 
+                svgLine.setAttribute('stroke',
                     dot2 === 'dotX' ? '#FF0000' :
-                    dot2 === 'dotY' ? '#00FF00' : '#0000FF'
+                        dot2 === 'dotY' ? '#00FF00' : '#0000FF'
                 );
 
                 if (dimensionHotspot) {

@@ -45,7 +45,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
     add_action('plugins_loaded', 'my_polymuse_theme_warning_plugin_init');
 
     // Add custom field to product editor
-      function polymuse_save_custom_field($post_id)
+    function polymuse_save_custom_field($post_id)
     {
         if (isset($_POST['_3d_model_config_json'])) {
             $model_config_json = stripslashes($_POST['_3d_model_config_json']);
@@ -147,7 +147,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $model_viewer .= '  <div id="model-controls" class="model-controls">';
                 // $model_viewer .= '    ' . ($config_array["show_qr_code_button"] ? '<button id="qr-button" class="qr-button control-button" data-umami-event="QR Code button"><i class="fa-solid fa-qrcode"></i><span>View in your space</span></button>' : '');
                 $model_viewer .= '    ' . ($config_array["show_qr_code_button"] ? '<button id="qr-button" class="qr-button control-button" data-embed-url="' . esc_url($config_array["embed_url"]) . '" data-umami-event="QR Code button"><i class="fa-solid fa-qrcode"></i><span>View in your space</span></button>' : '');
-                $model_viewer .= '    ' . ($config_array["show_dimensions_button"] ? '<button id=dimensions-button class="control-button dimensions-button"><i class="fa-solid fa-ruler"></i><span>Show Dimensions</span></button>' : '');
+                $model_viewer .= '    ' . ($config_array["show_dimensions_button"] ? '<button id="dimensions-button" class="control-button dimensions-button"><i class="fa-solid fa-ruler"></i><span>Show Dimensions</span></button>' : '');
+                $model_viewer .= '  </div>';
                 $model_viewer .= '  </div>';
                 $model_viewer .= '</model-viewer>';
                 $model_viewer .= '</div>';
