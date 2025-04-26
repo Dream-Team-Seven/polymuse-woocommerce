@@ -13,7 +13,7 @@ jQuery(document).ready(function ($) {
 
     let showDimensions = false;
     let dimensionUnit = 'metric';
-    const $modelViewer = $('#chair'); // Use ID to select model-viewer
+    const $modelViewer = $('#product-model'); 
 
     function adjustModelViewerHeight() {
         $('.polymuse-model-viewer').height(500);
