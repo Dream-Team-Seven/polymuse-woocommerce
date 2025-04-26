@@ -211,7 +211,7 @@ jQuery(document).ready(function ($) {
         $modelViewerVariants[0].variantName = event.target.value === 'default' ? null : event.target.value;
     });
     function setupDimensionsButton() {
-        const $dimensionsButton = $('.dimensions-button'); // Keep class selector for the button
+        const $dimensionsButton = $('#dimensions-button'); // Keep class selector for the button
         console.log('$dimensionsButton element:', $dimensionsButton); // Log the button element
 
         if ($dimensionsButton.length) {
