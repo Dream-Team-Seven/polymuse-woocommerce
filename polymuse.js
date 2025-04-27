@@ -184,8 +184,8 @@ jQuery(document).ready(function ($) {
         const modelViewer = $('model-viewer')[0];
         let showDimensions = false;
 
-        const configData = $(modelViewer).data('config') || {};
-        const dimensionUnit = configData.dimension_unit || '';
+        // Retrieve dimension unit from model-viewer data attribute
+        const dimensionUnit = $(modelViewer).data('dimension-unit') || '';
         console.log(dimensionUnit);
 
         $('#dimensions-button').on('click', function () {

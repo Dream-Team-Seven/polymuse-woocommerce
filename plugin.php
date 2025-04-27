@@ -134,7 +134,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                   ' . ($config_array["ar"] ? 'ar' : '') . '
                   ' . ($config_array["auto_rotate"] ? 'auto-rotate' : '') . '
                   ' . ($config_array["auto_rotate"] ? 'rotation-per-second="' . ($config_array["rotate_direction"] == 'left' ? '30deg' : '-30deg') . '"' : '') . '
-                  dimension-system="' . $config_array["dimension_unit"] . '"
+                  data-dimension-system="' . $config_array["dimension_unit"] . '"
                   style="width: 100%; height: 100%; background-color: ' . ($config_array["is_transparent"] ? 'transparent' : $model_config_json["background_color"]) . ';"
                   data-config="' . json_encode($config_array) . '"
                 >';
