@@ -134,9 +134,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                   ' . ($config_array["ar"] ? 'ar' : '') . '
                   ' . ($config_array["auto_rotate"] ? 'auto-rotate' : '') . '
                   ' . ($config_array["auto_rotate"] ? 'rotation-per-second="' . ($config_array["rotate_direction"] == 'left' ? '30deg' : '-30deg') . '"' : '') . '
-                  data-dimension-system="' . $config_array["dimension_unit"] . '"
-                  style="width: 100%; height: 100%; background-color: ' . ($config_array["is_transparent"] ? 'transparent' : $model_config_json["background_color"]) . ';"
-                  data-config="' . json_encode($config_array) . '"
+                 data-dimension-unit="' . $config_array["dimension_unit"] . '"
+                 style="width: 100%; height: 100%; background-color: ' . ($config_array["is_transparent"] ? 'transparent' : $model_config_json["background_color"]) . ';"
+                 data-config="' . json_encode($config_array) . '"
                 >';
                 $model_viewer .= '  <!-- AR button -->';
                 $model_viewer .= '<button class="ar-button" slot="ar-button" data-umami-event="AR Experiences"><i class="fa-solid fa-cube"></i><span>View in your space</span></button>';

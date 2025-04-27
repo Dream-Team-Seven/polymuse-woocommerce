@@ -186,7 +186,8 @@ jQuery(document).ready(function ($) {
 
         // Retrieve dimension unit from model-viewer data attribute
         const dimensionUnit = $(modelViewer).data('dimension-unit') || '';
-        console.log(dimensionUnit);
+
+        console.log("dimension usint: ", dimensionUnit);
 
         $('#dimensions-button').on('click', function () {
             console.log('Dimensions button clicked');
