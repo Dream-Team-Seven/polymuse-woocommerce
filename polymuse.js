@@ -244,10 +244,9 @@ jQuery(document).ready(function ($) {
             modelViewer.appendChild(svg);
 
             $(modelViewer).on('load.dimensions', updateDimensions);
-            const throttledRenderSVG = throttle(renderSVG, 100); // 100ms throttle
-            // $(modelViewer).on('camera-change.dimensions', throttledRenderSVG);
+            $(modelViewer).on('camera-change.dimensions', renderSVG);
 
-            setTimeout(updateDimensions, 100);
+            // setTimeout(updateDimensions, 100);
         }
 
         function removeDimensions() {
