@@ -244,7 +244,8 @@ jQuery(document).ready(function ($) {
             modelViewer.appendChild(svg);
 
             $(modelViewer).on('load.dimensions', updateDimensions);
-            // $(modelViewer).on('camera-change.dimensions', renderSVG);
+              const throttledRenderSVG = throttle(renderSVG, 1000); // 100ms throttle
+            $(modelViewer).on('camera-change.dimensions', throttledRenderSVG)
 
             setTimeout(updateDimensions, 100);
         }
