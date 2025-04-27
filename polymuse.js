@@ -181,10 +181,12 @@ jQuery(document).ready(function ($) {
 
     function setupDimensionsButton() {
         console.log('Setting up dimensions button');
-        const modelViewer = $('model-viewer#product-model')[0];
+        const modelViewer = $('model-viewer')[0];
         let showDimensions = false;
+
         // Retrieve dimension unit from model-viewer data attribute
         const dimensionUnit = $(modelViewer).data('dimension-unit') || '';
+        console.log(dimensionUnit);
 
         $('#dimensions-button').on('click', function () {
             console.log('Dimensions button clicked');
