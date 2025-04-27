@@ -244,7 +244,7 @@ jQuery(document).ready(function ($) {
             modelViewer.appendChild(svg);
 
             $(modelViewer).on('load.dimensions', updateDimensions);
-            $(modelViewer).on('camera-change.dimensions', renderSVG);
+            // $(modelViewer).on('camera-change.dimensions', renderSVG);
 
             setTimeout(updateDimensions, 100);
         }
@@ -257,8 +257,7 @@ jQuery(document).ready(function ($) {
             if (svg) svg.remove();
 
             $(modelViewer).off('load.dimensions');
-            const throttledRenderSVG = throttle(renderSVG, 1000); // 100ms throttle
-            // $(modelViewer).on('camera-change.dimensions', throttledRenderSVG);
+            $(modelViewer).off('camera-change.dimensions');
         }
 
         function updateDimensions() {
@@ -376,24 +375,24 @@ jQuery(document).ready(function ($) {
     }
 
     function throttle(func, limit) {
-        let lastFunc;
-        let lastRan;
-        return function () {
-            const context = this;
-            const args = arguments;
-            if (!lastRan) {
-                func.apply(context, args);
-                lastRan = Date.now();
-            } else {
-                clearTimeout(lastFunc);
-                lastFunc = setTimeout(function () {
-                    if ((Date.now() - lastRan) >= limit) {
-                        func.apply(context, args);
-                        lastRan = Date.now();
-                    }
-                }, limit - (Date.now() - lastRan));
-            }
-        };
-    }
+    let lastFunc;
+    let lastRan;
+    return function () {
+        const context = this;
+        const args = arguments;
+        if (!lastRan) {
+            func.apply(context, args);
+            lastRan = Date.now();
+        } else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(function () {
+                if ((Date.now() - lastRan) >= limit) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                }
+            }, limit - (Date.now() - lastRan));
+        }
+    };
+}
 
 });
