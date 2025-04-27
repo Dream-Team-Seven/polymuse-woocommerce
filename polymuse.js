@@ -246,7 +246,7 @@ jQuery(document).ready(function ($) {
             $(modelViewer).on('load.dimensions', updateDimensions);
             $(modelViewer).on('camera-change.dimensions', renderSVG);
 
-            // setTimeout(updateDimensions, 100);
+            setTimeout(updateDimensions, 100);
         }
 
         function removeDimensions() {
@@ -257,7 +257,8 @@ jQuery(document).ready(function ($) {
             if (svg) svg.remove();
 
             $(modelViewer).off('load.dimensions');
-            $(modelViewer).off('camera-change.dimensions');
+            const throttledRenderSVG = throttle(renderSVG, 1000); // 100ms throttle
+            $(modelViewer).on('camera-change.dimensions', throttledRenderSVG);
         }
 
         function updateDimensions() {
